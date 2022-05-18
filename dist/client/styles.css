@@ -27,9 +27,11 @@ body {
 }
 
 #application-window {
-  min-height: 500px;
-  min-width: 500px;
-  width: 80%;
+  min-height: 300px;
+  height: 70%;
+  max-height: 800px;
+  min-width: 300px;
+  width: 85%;
   max-width: 800px;
   display: grid;
   grid-template-rows: 30px;
@@ -49,7 +51,7 @@ body {
   border-radius: 0px 0px 15px 15px;
   background-color: #383d40;
   display: grid;
-  grid-template-rows: 93% 7%;
+  grid-template-rows: minmax(0, 100%) 1fr;
   padding: 10px;
 }
 
@@ -58,14 +60,14 @@ body {
   display: grid;
   grid-template-columns: 1fr minmax(0, 100%) 1fr;
   height: 100%;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 #message-prefix {
   background: #0b0c0c;
   border-radius: 10px 0px 0px 10px;
   padding-left: 12px;
-  font-size: 14px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,7 +82,7 @@ body {
   border: none;
   select: none;
   padding-left: 10px;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 #send-button {
@@ -108,7 +110,7 @@ body {
 /* classes */
 
 .message-box * {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .message-box {
