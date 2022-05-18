@@ -1,0 +1,19 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "allowJs": true,
+    "allowUnreachableCode": false,
+    "experimentalDecorators": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "outDir": "./dist/server",
+    "target": "es5",
+    "typeRoots": ["./typings"]
+  },
+  "exclude": [
+    "./plugins/**/*",
+    "./typings/**/*",
+    "./dist/**/*" // This is what fixed it!
+  ],
+  "include": ["./server/*"]
+}

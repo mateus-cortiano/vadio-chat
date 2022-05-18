@@ -1,0 +1,37 @@
+<!--index.html-->
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./bundle.js" type="module" defer></script>
+  <link rel="stylesheet" href="./styles.css">
+  <title> > test-chat</title>
+</head>
+
+<body>
+  <div id="application">
+    <div id="application-window">
+      <div id="application-titlebar" class="disable-select">chat</div>
+      <div id="application-content">
+        <div id="messages-container">
+          <div class="message-box">
+            <div class="message-box-icon"></div>
+            <div class="message-box-timestamp">12:50:32</div>
+            <div class="message-box-username">mateus.cortiano</div>
+            <div class="message-box-content">Hello, world!</div>
+          </div>
+        </div>
+        <form id="send-container">
+          <div id="message-prefix">></div>
+          <input type="text" id="message-input" maxlength="120" autocomplete="off">
+          <button type="button" id="send-button">SEND</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
