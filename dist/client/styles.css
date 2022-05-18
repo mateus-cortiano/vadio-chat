@@ -3,15 +3,18 @@
 * {
   font-family: Cascadia Mono, monospace;
   font-size: 12px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*:focus {
+  outline: none;
 }
 
 body {
   color: #fff;
   background-color: #26292a;
-}
-
-*:focus {
-  outline: none;
 }
 
 /* ids */
@@ -76,7 +79,7 @@ body {
   width: 100%;
   border: none;
   select: none;
-  padding-left: 6px;
+  padding-left: 10px;
   font-size: 14px;
 }
 
@@ -104,14 +107,31 @@ body {
 
 /* classes */
 
+.message-box * {
+  font-size: 14px;
+}
+
 .message-box {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr minmax(0, 100%);
-  column-gap: 10px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr minmax(0, 100%);
   width: 100%;
+  padding: 2px 0px 2px 0px;
+}
+
+.message-box-timestamp {
+  /* color: #2e3232; */
+  color: #666;
 }
 
 /* utilities */
+
+.self-user {
+  color: #b69231;
+}
+
+.other-user {
+  color: #3f61d0;
+}
 
 .disable-select {
   -webkit-user-select: none;
