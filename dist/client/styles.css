@@ -26,13 +26,14 @@ body {
   justify-content: center;
 }
 
-#application-window {
+#application-main-window {
   min-height: 300px;
   height: 70%;
   max-height: 800px;
   min-width: 300px;
   width: 85%;
   max-width: 800px;
+  border-radius: 15px;
   display: grid;
   grid-template-rows: 30px;
   border-radius: 15px;
@@ -53,6 +54,10 @@ body {
   display: grid;
   grid-template-rows: minmax(0, 100%) 1fr;
   padding: 10px;
+}
+
+#messages-container {
+  width: 100%;
 }
 
 #send-container {
@@ -114,10 +119,14 @@ body {
 }
 
 .message-box {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr minmax(0, 100%);
   width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr minmax(0, 100%);
   padding: 2px 0px 2px 0px;
+}
+
+.message-box-separator {
+  padding-right: 4px;
 }
 
 .message-box-timestamp {
@@ -140,4 +149,14 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.hidden {
+  display: none;
+  visiblity: hidden;
+}
+
+.shown {
+  display: block;
+  visibility: visible;
 }

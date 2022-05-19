@@ -15,5 +15,5 @@
     "./typings/**/*",
     "./dist/**/*" // This is what fixed it!
   ],
-  "include": ["./server/*"]
+  "include": ["./src/server/*"]
 }

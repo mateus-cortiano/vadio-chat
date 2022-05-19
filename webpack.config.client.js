@@ -1,7 +1,9 @@
+/* webpack.config.client.js */
+
 const path = require('path')
 
 module.exports = {
-  entry: './client/index.ts',
+  entry: './src/client/index.ts',
   module: {
     rules: [
       {
