@@ -6,20 +6,21 @@ import { Message } from '../lib/message'
 // ---
 
 export class Chat {
-  private container = $('#messages-container')
+  private static container = $('#messages-container')
 
-  add(message: Message) {
+  static add(message: Message) {
     let stamp = formatedTime(message.timestamp)
-    let element = document.createElement('div')
+    let element = $(document.createElement('div'))
 
-    element.className = classes.box
-    element.append(createDiv(classes.timestamp, stamp))
-    element.append(createDiv(classes.separator, ''))
-    element.append(createDiv(classes.author, message.author))
-    element.append(createDiv(classes.separator, ':'))
-    element.append(createDiv(classes.content, message.content))
+    element
+      .addClass(classes.box)
+      .append(createDiv(classes.timestamp, stamp))
+      .append(createDiv(classes.separator, ''))
+      .append(createDiv(classes.author, message.author))
+      .append(createDiv(classes.separator, ':'))
+      .append(createDiv(classes.content, message.content))
 
-    this.container.append(element)
+    Chat.container.append(element)
   }
 }
 

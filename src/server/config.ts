@@ -6,22 +6,33 @@ import { validateSetter, isIPAddress, isTCPPort } from '../lib/validators'
 
 // ---
 
-export class Environment {
+export enum Modes {
+  'development',
+  'production'
+}
+
+export type Mode = keyof typeof Modes
+
+const MODES = Object.keys(Modes)
+
+export class Configuration {
   private _host: string = ''
   private _port: number = 3000
-  private _pass: string
-  private _public_path: string
-  private _views_path: string
+  private _mode: Mode
+  readonly pass: string
+  readonly public_path: string
+  readonly views_path: string
 
   constructor() {
-    let error: Error = dotenv.config().error
+    let error = dotenv.config().error
     if (error) throw error
 
-    this._pass = env.APPLICATION_SOCKET_PASS
-    this._public_path = env.APPLICATION_PUBLIC_PATH
-    this._views_path = env.APPLICATION_VIEWS_PATH
     this.host = env.APPLICATION_SOCKET_HOST
     this.port = Number(env.APPLICATION_SOCKET_PORT)
+    this.mode = env.APPLICATION_MODE as Mode
+    this.pass = env.APPLICATION_SOCKET_PASS
+    this.views_path = env.APPLICATION_VIEWS_PATH
+    this.public_path = env.APPLICATION_PUBLIC_PATH
   }
 
   public get host() {
@@ -32,12 +43,8 @@ export class Environment {
     return this._port
   }
 
-  public get public_path() {
-    return this._public_path
-  }
-
-  public get views_path() {
-    return this._views_path
+  public get mode() {
+    return this._mode
   }
 
   public get address() {
@@ -53,4 +60,15 @@ export class Environment {
   private set port(value: number) {
     this._port = value
   }
+
+  @validateSetter(isValidMode)
+  private set mode(value: Mode) {
+    this._mode = value
+  }
+}
+
+/* Validators */
+
+function isValidMode(subject: any): subject is Mode {
+  return MODES.includes(subject)
 }

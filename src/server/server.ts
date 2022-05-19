@@ -6,7 +6,8 @@ import * as http from 'http'
 import * as socketio from 'socket.io'
 import * as ejs from 'ejs'
 
-import { Logger } from '../lib/logger'
+import { Mode } from './config'
+import { Logger, FileLogHandler } from '../lib/logger'
 
 import {
   ServerToClientEvents,
@@ -29,12 +30,22 @@ export class Server {
   >
   private logger: Logger
 
-  constructor(port: number, public_path: string = '../client') {
+  constructor(
+    port: number,
+    public_path: string = '../client',
+    readonly mode: Mode = 'production'
+  ) {
     this.port = port
     this.app = express()
     this.server = http.createServer(this.app)
     this.io = new socketio.Server(this.server)
-    this.logger = new Logger(this.constructor.name)
+    this.logger = Logger.getLogger(this.constructor.name)
+
+    let fileHandler = new FileLogHandler(
+      `./logs/${this.constructor.name.toLowerCase()}.log`
+    )
+
+    this.logger.addHandler(fileHandler)
 
     this.app
       .engine('html', ejs.renderFile)
@@ -46,16 +57,18 @@ export class Server {
       })
 
     this.io.on('connection', socket => {
-      this.logger.info(`* ${socket.id} connected`)
+      this.logger.info(` * ${socket.id} connected`)
 
       socket.on('clientMessage', data => {
-        this.logger.info(`> ${data.author}: ${data.content}`)
+        this.logger.info(` > ${data.author}: ${data.content}`)
       })
     })
   }
 
   public start() {
-    this.logger.info(`* application starting @ ${this.port}`)
+    this.logger.info(
+      ` * application starting in ${this.mode} mode @ port ${this.port}`
+    )
     this.server.listen(this.port)
   }
 }

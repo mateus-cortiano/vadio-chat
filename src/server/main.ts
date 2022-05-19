@@ -1,15 +1,15 @@
 /* main.ts */
 
 import { Server } from './server'
-import { Environment } from './config'
+import { Configuration } from './config'
 import { Message } from '../lib/message'
 
 // ---
 
 const SELF = '#vadio'
 
-const env = new Environment()
-const server = new Server(env.port, env.public_path)
+const env = new Configuration()
+const server = new Server(env.port, env.public_path, env.mode)
 
 server.io.on('connection', socket => {
   let message = new Message(SELF, `${socket.id} connected`, 'connection')

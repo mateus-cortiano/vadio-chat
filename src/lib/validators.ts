@@ -1,20 +1,23 @@
 /* validators.ts */
 
-// ---
-
 type Validator = (subject: any) => boolean
 
 class ValidationError extends Error {
   name = 'ValidationError'
 
-  constructor(value: string, property: string, instance: object) {
+  constructor(
+    value: string,
+    property: string,
+    instance: object,
+    validator: Validator
+  ) {
     super(
-      `'${value}' is not a valid for '${instance.constructor.name}.${property}'`
+      `${validator.name}: '${value}' is not valid for '${instance.constructor.name}.${property}'`
     )
   }
 }
 
-export function validateSetter(validator: Validator) {
+export function validateSetter(...validators: Validator[]) {
   return function (
     target: object,
     propertyKey: string,
@@ -23,7 +26,10 @@ export function validateSetter(validator: Validator) {
     const setter = descriptor.set
 
     descriptor.set = function (this: any, value: any) {
-      if (!validator(value)) throw new ValidationError(value, propertyKey, this)
+      for (let validator of validators) {
+        if (!validator(value))
+          throw new ValidationError(value, propertyKey, this, validator)
+      }
 
       setter.call(this, value)
     }
