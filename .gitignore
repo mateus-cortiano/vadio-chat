@@ -1,4 +1,6 @@
 /.archive
 /dist/**/*.js
 /node_modules
+/logs
 *.env
+

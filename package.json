@@ -6,7 +6,7 @@
   "scripts": {
     "dev-watch-client": "webpack --mode development --config webpack.config.client.js --watch ",
     "dev-build-client": "webpack --mode development --config webpack.config.client.js",
-    "dev-run-server": "node ./dist/server/main.js",
+    "dev-run-server": "node ./dist/server/main.js ",
     "dev-watch-server": "tsc --watch ",
     "dev-build-server": "tsc",
     "dev-buildrun-server": "npm run dev-build-server && npm run dev-run-server",
