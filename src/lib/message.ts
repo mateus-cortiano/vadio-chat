@@ -20,7 +20,7 @@ export class Message implements SocketData {
     this.timestamp = Date.now()
   }
 
-  toString() {
+  public toString() {
     let stamp = new Date(this.timestamp).toLocaleTimeString(
       undefined,
       timeFormatOpts

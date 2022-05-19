@@ -2,7 +2,7 @@
 
 import { env } from 'process'
 import * as dotenv from 'dotenv'
-import { validateSetter, isIPAddress, isTCPPort } from './validators'
+import { validateSetter, isIPAddress, isTCPPort } from '../lib/validators'
 
 // ---
 
@@ -24,33 +24,33 @@ export class Environment {
     this.port = Number(env.APPLICATION_SOCKET_PORT)
   }
 
-  get host() {
+  public get host() {
     return this._host
   }
 
-  @validateSetter(isIPAddress)
-  set host(value: string) {
-    this._host = value
-  }
-
-  get port() {
+  public get port() {
     return this._port
   }
 
-  @validateSetter(isTCPPort)
-  set port(value: number) {
-    this._port = value
-  }
-
-  get public_path() {
+  public get public_path() {
     return this._public_path
   }
 
-  get views_path() {
+  public get views_path() {
     return this._views_path
   }
 
-  get address() {
+  public get address() {
     return `${this.host}:${this.port}`
+  }
+
+  @validateSetter(isIPAddress)
+  private set host(value: string) {
+    this._host = value
+  }
+
+  @validateSetter(isTCPPort)
+  private set port(value: number) {
+    this._port = value
   }
 }

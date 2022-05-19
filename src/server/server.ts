@@ -6,7 +6,7 @@ import * as http from 'http'
 import * as socketio from 'socket.io'
 import * as ejs from 'ejs'
 
-import { Logger } from './logger'
+import { Logger } from '../lib/logger'
 
 import {
   ServerToClientEvents,
@@ -30,10 +30,10 @@ export class Server {
   private logger: Logger
 
   constructor(port: number, public_path: string = '../client') {
+    this.port = port
     this.app = express()
     this.server = http.createServer(this.app)
     this.io = new socketio.Server(this.server)
-    this.port = port
     this.logger = new Logger(this.constructor.name)
 
     this.app
@@ -44,10 +44,18 @@ export class Server {
       .use('/', (req, res) => {
         res.render('index.html')
       })
+
+    this.io.on('connection', socket => {
+      this.logger.info(`* ${socket.id} connected`)
+
+      socket.on('clientMessage', data => {
+        this.logger.info(`> ${data.author}: ${data.content}`)
+      })
+    })
   }
 
   public start() {
-    this.logger.info(`* application starting port: ${this.port}`)
+    this.logger.info(`* application starting @ ${this.port}`)
     this.server.listen(this.port)
   }
 }
