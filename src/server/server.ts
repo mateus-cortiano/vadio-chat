@@ -7,7 +7,7 @@ import * as socketio from 'socket.io'
 import * as ejs from 'ejs'
 
 import { Mode } from './config'
-import { Logger, FileLogHandler } from '../lib/logger'
+import { Logger } from '../lib/logger'
 
 import {
   ServerToClientEvents,
