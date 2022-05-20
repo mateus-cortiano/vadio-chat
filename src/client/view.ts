@@ -158,7 +158,8 @@ export class LoginWindow {
   }
 
   shakeModal() {
-    this.modal.attr('style', 'animation: shake 800ms ease-in-out forwards')
+    this.modal.toggleClass('shakeit')
+    setTimeout(() => this.modal.toggleClass('shakeit'), 300)
   }
 
   onsend(callback: (event: JQuery.ClickEvent) => void) {
