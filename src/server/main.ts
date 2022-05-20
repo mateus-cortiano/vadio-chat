@@ -6,19 +6,29 @@ import { Message } from '../lib/message'
 
 // ---
 
-const SELF = '#vadio'
-
 const env = new Configuration()
-const server = new Server(env.port, env.public_path, env.mode)
+const server = new Server(env.port, env.public_path)
 
 server.io.on('connection', socket => {
-  let message = new Message(SELF, `${socket.id} connected`, 'connection')
+  let username: string | null = null
 
   socket.emit('connected', socket.id)
-  server.io.emit('serverMessage', message)
+
+  socket.on('sendUsername', un => {
+    username = un
+    let message = new Message(
+      env.name,
+      `${username} connected`,
+      'serverMessage'
+    )
+
+    socket.emit('isAuthenticated')
+    server.io.emit('serverMessage', message)
+  })
 
   socket.on('clientMessage', data => {
-    message = new Message(socket.id, data.content, data.event)
+    if (username === null) return
+    let message = new Message(username, data.content, data.event)
     server.io.emit('serverMessage', message)
   })
 })

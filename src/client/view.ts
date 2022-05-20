@@ -50,3 +50,7 @@ function createDiv(classes: string, content: string, id: string = '') {
 
   return element
 }
+
+export function hideElement(html: string) {
+  $(html).attr('style', 'opacity: 0; display: none')
+}

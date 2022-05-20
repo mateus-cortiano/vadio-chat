@@ -14,13 +14,23 @@
 <body>
   <div id="application">
     <div id="application-main-window">
+      <div id="overlay" data-overlay>
+        <div id="modal" data-overlay>
+          <form id="username-form" data-overlay>
+            <input type="text" id="username-input" name="username-input" maxlength="12" placeholder="username"
+              data-overlay>
+            <button type="submit" id="submit-username-button" name="submit-username-button" data-overlay>GO</button>
+            </input:name>
+          </form>
+        </div>
+      </div>
       <div id="application-titlebar" class="disable-select">chat</div>
       <div id="application-content">
         <div id="messages-container"></div>
         <form id="send-container">
           <div id="message-prefix">></div>
           <input type="text" name="message-content" id="message-input" maxlength="120" autocomplete="off">
-          <button type="submit" id="send-button">SEND</button>
+          <button type="submit" name="send-message-button" id="send-button">SEND</button>
         </form>
       </div>
     </div>

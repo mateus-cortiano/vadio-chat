@@ -21,12 +21,21 @@
       "detail": "npm run dev-build-server && npm run dev-run-server",
       "options": {
         "env": {
+          "NAME": "#VADIO",
           "PORT": "3000",
           "NODE_ENV": "development",
           "APPLICATION_VIEWS_PATH ": "../client",
           "APPLICATION_PUBLIC_PATH": "../client"
         }
       }
+    },
+    {
+      "type": "npm",
+      "script": "dev-watch-client",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm: dev-watch-client",
+      "detail": "webpack --mode development --config webpack.config.client.js --watch "
     }
   ]
 }

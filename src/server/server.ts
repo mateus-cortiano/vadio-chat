@@ -6,7 +6,6 @@ import * as http from 'http'
 import * as socketio from 'socket.io'
 import * as ejs from 'ejs'
 
-import { Mode } from './config'
 import { Logger } from '../lib/logger'
 
 import {
@@ -29,11 +28,7 @@ export class Server {
   >
   private logger: Logger
 
-  constructor(
-    public port: number,
-    public public_path: string = '../client',
-    readonly mode: Mode = 'production'
-  ) {
+  constructor(public port: number, public public_path: string = '../client') {
     this.app = express()
     this.server = http.createServer(this.app)
     this.io = new socketio.Server(this.server)
@@ -58,9 +53,8 @@ export class Server {
   }
 
   public start() {
-    this.logger.info(
-      ` * application starting in ${this.mode} mode @ port ${this.port}`
-    )
+    this.logger.info(` * server starting`)
+    this.logger.info(` * listenting to port: ${this.port}.`)
     this.server.listen(this.port)
   }
 }

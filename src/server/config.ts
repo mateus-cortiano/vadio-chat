@@ -17,15 +17,13 @@ const MODES = Object.keys(Modes)
 export class Configuration {
   private _port: number = 3000
   private _mode: Mode
-  readonly pass: string
+  readonly name: string
   readonly public_path: string
-  readonly views_path: string
 
   constructor() {
+    this.name = env.NAME
     this.port = Number(env.PORT)
     this.mode = env.NODE_ENV as Mode
-    this.pass = env.APPLICATION_SOCKET_PASS
-    this.views_path = env.APPLICATION_VIEWS_PATH
     this.public_path = env.APPLICATION_PUBLIC_PATH
   }
 
