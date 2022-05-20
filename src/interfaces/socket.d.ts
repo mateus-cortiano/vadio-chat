@@ -1,7 +1,5 @@
 /* socket.ts */
 
-// ---
-
 export interface ServerToClientEvents {
   connected: (d: SocketData) => void
   serverMessage: (d: SocketData) => void
