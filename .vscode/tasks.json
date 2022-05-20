@@ -11,6 +11,22 @@
       "problemMatcher": [],
       "label": "npm: dev-watch-server",
       "detail": "tsc --watch "
+    },
+    {
+      "type": "npm",
+      "script": "dev-buildrun-server",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm: dev-buildrun-server",
+      "detail": "npm run dev-build-server && npm run dev-run-server",
+      "options": {
+        "env": {
+          "PORT": "3000",
+          "NODE_ENV": "development",
+          "APPLICATION_VIEWS_PATH ": "../client",
+          "APPLICATION_PUBLIC_PATH": "../client"
+        }
+      }
     }
   ]
 }
