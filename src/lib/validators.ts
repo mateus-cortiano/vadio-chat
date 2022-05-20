@@ -47,7 +47,7 @@ const IPV6Regex = new RegExp(
 )
 
 export function isIPV4Address(subject: string): boolean {
-  return IPV4Regex.test(subject) || subject === 'localhost'
+  return IPV4Regex.test(subject)
 }
 
 export function isIPV6Address(subject: string): boolean {

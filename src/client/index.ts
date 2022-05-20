@@ -7,11 +7,9 @@ import { Client } from './client'
 
 // ---
 
-const client = new Client('127.0.0.1', 3000)
+const client = new Client()
 
-client.socket.on('serverMessage', (data: Message) => {
-  Chat.add(data)
-})
+client.socket.on('serverMessage', data => Chat.add(data))
 
 $('#send-button').on('click', event => {
   event.preventDefault()

@@ -1,7 +1,6 @@
 /* config.ts */
 
 import { env } from 'process'
-import * as dotenv from 'dotenv'
 import { validateSetter, isIPAddress, isTCPPort } from '../lib/validators'
 
 // ---
@@ -16,7 +15,6 @@ export type Mode = keyof typeof Modes
 const MODES = Object.keys(Modes)
 
 export class Configuration {
-  private _host: string = ''
   private _port: number = 3000
   private _mode: Mode
   readonly pass: string
@@ -24,19 +22,11 @@ export class Configuration {
   readonly views_path: string
 
   constructor() {
-    let error = dotenv.config().error
-    if (error) throw error
-
-    this.host = env.APPLICATION_SOCKET_HOST
-    this.port = Number(env.APPLICATION_SOCKET_PORT)
-    this.mode = env.APPLICATION_MODE as Mode
+    this.port = Number(env.PORT)
+    this.mode = env.NODE_ENV as Mode
     this.pass = env.APPLICATION_SOCKET_PASS
     this.views_path = env.APPLICATION_VIEWS_PATH
     this.public_path = env.APPLICATION_PUBLIC_PATH
-  }
-
-  public get host() {
-    return this._host
   }
 
   public get port() {
@@ -45,15 +35,6 @@ export class Configuration {
 
   public get mode() {
     return this._mode
-  }
-
-  public get address() {
-    return `${this.host}:${this.port}`
-  }
-
-  @validateSetter(isIPAddress)
-  private set host(value: string) {
-    this._host = value
   }
 
   @validateSetter(isTCPPort)

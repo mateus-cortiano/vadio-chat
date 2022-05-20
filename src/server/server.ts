@@ -19,7 +19,6 @@ import {
 // ---
 
 export class Server {
-  public port: number
   public server: http.Server
   public app: express.Express
   public io: socketio.Server<
@@ -31,11 +30,10 @@ export class Server {
   private logger: Logger
 
   constructor(
-    port: number,
-    public_path: string = '../client',
+    public port: number,
+    public public_path: string = '../client',
     readonly mode: Mode = 'production'
   ) {
-    this.port = port
     this.app = express()
     this.server = http.createServer(this.app)
     this.io = new socketio.Server(this.server)

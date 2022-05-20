@@ -2,7 +2,6 @@
 
 import { io, Socket } from 'socket.io-client'
 import { Message } from '../lib/message'
-import { validateSetter, isIPAddress, isTCPPort } from '../lib/validators'
 
 export class Client {
   public socket: Socket
@@ -10,10 +9,12 @@ export class Client {
   private _host: string
   private _port: number
 
-  constructor(host: string, port: number) {
+  constructor(host: string = '', port: number | null = null) {
     this.host = host
     this.port = port
-    this.socket = io(this.address)
+    this.socket = io(this.address, {
+      withCredentials: true
+    })
 
     this.socket.on('connected', id => (this.id = id))
   }
@@ -28,15 +29,13 @@ export class Client {
   }
 
   public get address() {
-    return `${this._host}:${this._port}`
+    return this._host && this._port ? `${this._host}:${this._port}` : ''
   }
 
-  @validateSetter(isIPAddress)
   private set host(value: string) {
     this._host = value
   }
 
-  @validateSetter(isTCPPort)
   private set port(value: number) {
     this._port = value
   }
