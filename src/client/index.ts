@@ -3,43 +3,55 @@
 import * as $ from 'jquery'
 import * as View from './view'
 import { Client } from './client'
+import { Message } from '../lib/message'
+import { SocketData } from '../interfaces/socket'
 
 // ---
 
 const client = new Client()
+const parent = $('div[name=application]')
+const mainView = new View.MainWindow(parent)
+const loginView = new View.LoginWindow(parent)
 
-$('button[name=submit-username-button]').on('click', event => {
-  event.preventDefault()
+let username: string
 
-  let element = $('input[name=username-input]')
-  let content = element.val() as string
-
-  if (!content) return
-
-  View.displayElement('div[data-modalblock]')
-  client.socket.emit('sendUsername', content)
+client.socket.on('connected', (data: SocketData) => {
+  mainView.setTitle('#vadio')
+  mainView.setHostName(data.hostname)
 })
 
-client.socket.on('isAuthenticated', data => {
+loginView.onsend(event => {
+  event.preventDefault()
+
+  if (!loginView.currentInput) return
+
+  username = loginView.currentInput
+
+  loginView.disableInputs()
+  client.socket.emit('sendUsername', username)
+})
+
+client.socket.on('isAuthenticated', (data: SocketData) => {
   if (data.err) {
-    View.hideElement('div[data-modalblock]')
-    View.showError('> ' + data.err)
+    loginView.displayError(data.err)
+    loginView.enableInputs()
     return
   }
-  View.fadeElement('div[data-overlay]')
+
+  loginView.hideWindow()
+  mainView.setUserName(username)
 })
 
-client.socket.on('serverMessage', data => View.Chat.add(data))
+client.socket.on('serverMessage', (message: SocketData) => {
+  mainView.addMessage(message)
+})
 
-$('button[name=send-message-button]').on('click', event => {
+mainView.onsend(event => {
   event.preventDefault()
 
-  let element = $('input[name=message-content]')
-  let content = element.val() as string
+  if (!mainView.currentInput) return
 
-  if (!content) return
-
-  client.send_message(content)
-
-  element.val('')
+  let message = new Message('', mainView.currentInput)
+  mainView.clearInput()
+  client.socket.emit('clientMessage', message)
 })

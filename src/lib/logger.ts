@@ -1,6 +1,6 @@
 /* logger.ts */
 
-import { getTimeStamp } from './timestamp'
+import { getNowTimeString } from './timestamp'
 
 /* Level */
 
@@ -32,7 +32,7 @@ export class DefaultFormatter implements Formatter {
 
   format(name: string, level: Level, message: string): string {
     return this.stringfmt
-      .replace('${timestamp}', getTimeStamp())
+      .replace('${timestamp}', getNowTimeString())
       .replace('${level}', getLevelName(level))
       .replace('${name}', name)
       .replace('${message}', message)

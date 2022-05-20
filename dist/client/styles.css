@@ -2,7 +2,7 @@
 
 * {
   font-family: Cascadia Mono, monospace;
-  font-size: minmax(12px, 1.3rem);
+  font-size: minmax(12px, 1.3%);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -12,9 +12,8 @@
   outline: none;
 }
 
-body {
-  color: #fff;
-  background-color: #26292a;
+input {
+  border: none;
 }
 
 button {
@@ -27,92 +26,200 @@ button {
   box-shadow: 0px 0px;
 }
 
-button:hover {
+button:disabled {
+  background: #333;
+}
+
+button:hover:enabled {
   background: #9d7e2b !important;
   transform: translateY(-4px);
   box-shadow: 0px 4px black;
 }
 
-button:active {
+button:active:enabled {
   transform: translateY(0px);
   box-shadow: 0px 0px !important;
   background: #6a551d !important;
 }
 
-input {
-  color: white;
-  background: #0b0c0c;
-  border: none;
-  select: none;
+body {
+  color: #fff;
+  background-color: #111;
 }
 
-/* ids */
 
-#application {
-  height: 100%;
+/* Main Window */
+
+div[name='application'] {
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-#overlay {
-  position: absolute;
-  z-index: 10;
-
-  max-height: 800px;
-  max-width: 800px;
-  height: 70vh;
-  width: 85vw;
-  min-height: 300px;
+div[name='app-window'] {
+  max-width: 900px;
+  width: 80%;
   min-width: 300px;
+  max-height: 900px;
+  height: 60%;
+  min-height: 100px;
 
-  border-radius: 15px;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+}
 
-  background: #00000080;
+div[name='app-titlebar'] {
+  height: 45px;
+  color: #666;
+  background: #1f2428;
+  border-radius: 30px 30px 0 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  animation: fade 600ms ease-in-out;
+  user-select: none;
 }
 
-#modal {
-  height: 140px;
-  width: 280px;
-  z-index: 15;
+div[name='app-content'] {
+  height: 95%;
+  background: #24292e;
+  border-radius: 0 0 30px 30px;
+  display: flex;
+  flex-direction: column;
+}
 
-  border-radius: 15px;
-  background: #333;
+div[name='app-message-container-wrap'] {
+  /* background: red; */
+  padding: 15px 20px 0 20px;
+  height: 100%;
+  overflow: hidden;
+}
+
+div[name='app-message-container'] {
+  /* background: red; */
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+form[name='app-input-form'] {
+  height: 80px;
+
+  display: flex;
+  padding: 15px 18px 15px 15px;
+}
+
+div[name='app-input-prefix'] {
+  width: fit-content;
+  padding-left: 20px;
+  background: black;
+  border-radius: 15px 0 0 15px !important;
+  color: #333;
 
   display: flex;
   align-items: center;
   justify-content: center;
-
-  animation: fade 600ms ease-in-out forwards;
-  transform: translateY(-32px);
 }
 
-#modal-block {
+input[name='app-message-input'] {
+  width: 100%;
+  color: #fff;
+  background: black;
+  padding-left: 10px;
+}
+
+button[name='app-send-button'] {
+  border-radius: 0 15px 15px 0 !important;
+  width: 80px;
+}
+
+p[name='message-line'] {
+  width: 100%;
+  overflow: visible;
+}
+
+span[name='message-time'] {
+  color: #666;
+}
+
+span[name='message-author'] {
+  color: #4d76ff;
+}
+
+span[data-msg-author-is-self] {
+  color: #be5625;
+}
+
+span[data-msg-author-is-host] {
+  color: #be255d;
+}
+
+/* Login Window */
+
+div[name='app-login-window'] {
   position: absolute;
-  z-index: 15;
+  max-width: 900px;
+  width: 80%;
+  min-width: 300px;
+  max-height: 900px;
+  height: 60%;
+  min-height: 100px;
+  transform: translateY(-20px);
+  opacity: 0;  
+}
 
-  height: 140px;
-  width: 280px;
+div[name='app-login-bg'] {
+  width: 100%;
+  height: 100%;
 
-  background: #00000080;
-  border-radius: 15px;
+  background: #00000099;
+  border-radius: 30px;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+div[name="app-login-modal"] {
+  width: 300px;
+  height: 150px;
+  background-color: #24292e;
+  border-radius: 30px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+input[name="app-login-userinput"] {
+  height: 42px;
+  color: #fff;
+  background: black;
+  padding-left: 15px;
+  border-radius: 15px 0 0 15px;
+  transition: width 1s;
+}
+
+div[name="app-login-error"] {
   display: none;
+  padding-top: 15px;
+  color: #ccc;
 }
 
-#error-message {
-  font-size: 12px !important;
-  transform: translateY(20px);
+button[name="app-login-button"] {
+  width: 42px;
+  height: 42px;
+  border-radius: 0 15px 15px 0;
 }
 
-@keyframes fade {
+@keyframes fadein {
   100% {
+    display: block;
+    visibility: visible;
     opacity: 1;
     transform: translateY(0);
   }
@@ -120,156 +227,51 @@ input {
 
 @keyframes fadeout {
   0% {
-    transform: translateY(0);
+    display: block;
   }
   100% {
-    visibility: hidden;
     opacity: 0;
+    transform: translateY(-20px);
+    visibility: hidden;
     display: none;
-    transform: translateY(0);
   }
 }
 
-#username-form {
-  display: grid;
-  width: 100%;
-  grid-template-columns: minmax(0, 100%) 1fr;
-  padding: 0 24px 0 24px;
+@keyframes shake {
+  20% {
+    transform: translateX(20px)
+  }
+  40% {
+    transform: translateX(-20px)
+  }
+  60% {
+    transform: translateX(20px)
+  }
+  80% {
+    transform: translateX(-20px)
+  }
+  100% {
+    transform: translateX(0px)
+  }
 }
 
-#username-input {
-  border-radius: 12px 0px 0px 12px;
-  font-size: 1.3rem;
-  height: 38px;
-  padding-left: 12px;
+
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #24292e #24292e;
 }
 
-#submit-username-button {
-  border-radius: 0px 12px 12px 0px;
-  height: 38px;
-  width: 38px;
-  font-weight: light;
-  border: none;
-  color: white;
-  background: #283e84;
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 12px;
 }
 
-#application-main-window {
-  min-height: 300px;
-  height: 70%;
-  max-height: 800px;
-  min-width: 300px;
-  width: 85%;
-  max-width: 800px;
-  border-radius: 15px;
-  display: grid;
-  grid-template-rows: 30px;
-  border-radius: 15px;
+*::-webkit-scrollbar-track {
+  background: #24292e;
 }
 
-#application-titlebar {
-  border-radius: 15px 15px 0px 0px;
-  background-color: #2e3232;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-#application-content {
-  border-radius: 0px 0px 15px 15px;
-  background-color: #383d40;
-  display: grid;
-  grid-template-rows: minmax(0, 100%) 1fr;
-  padding: 10px;
-}
-
-#messages-container {
-  width: 100%;
-}
-
-#send-container {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr minmax(0, 100%) 1fr;
-  height: 100%;
-}
-
-#message-prefix {
-  background: #0b0c0c;
-  border-radius: 10px 0px 0px 10px;
-  padding-left: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #2e3232;
-}
-
-#message-input {
-  width: 100%;
-  padding-left: 10px;
-  font-size: 1.3rem;
-}
-
-#send-button {
-  border-radius: 0px 10px 10px 0px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  padding-right: 12px;
-}
-
-/* classes */
-
-.message-box * {
-  font-size: 1.3rem;
-}
-
-.message-box {
-  width: 100%;
-  display: inline-grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 50fr;
-  padding: 2px 0px 2px 0px;
-}
-
-.message-box-separator {
-  padding-right: 4px;
-}
-
-.message-box-timestamp {
-  /* color: #2e3232; */
-  color: #666;
-}
-
-.message-box-content {
-  word-wrap: normal;
-}
-
-/* utilities */
-
-.self-user {
-  color: #b69231;
-}
-
-.other-user {
-  color: #3f61d0;
-}
-
-.disable-select {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.hidden {
-  display: none;
-  visiblity: hidden;
-}
-
-.shown {
-  display: block;
-  visibility: visible;
+*::-webkit-scrollbar-thumb {
+  background-color: #1f2428;
+  border-radius: 12px;
 }
