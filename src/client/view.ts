@@ -52,5 +52,5 @@ function createDiv(classes: string, content: string, id: string = '') {
 }
 
 export function hideElement(html: string) {
-  $(html).attr('style', 'animation: fadeout 500ms ease forwards')
+  $(html).attr('style', 'animation: fadeout 1000ms ease forwards')
 }
