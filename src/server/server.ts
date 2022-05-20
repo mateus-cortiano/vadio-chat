@@ -39,12 +39,6 @@ export class Server {
     this.io = new socketio.Server(this.server)
     this.logger = Logger.getLogger(this.constructor.name)
 
-    let fileHandler = new FileLogHandler(
-      `./logs/${this.constructor.name.toLowerCase()}.log`
-    )
-
-    this.logger.addHandler(fileHandler)
-
     this.app
       .engine('html', ejs.renderFile)
       .set('views', path.join(__dirname, public_path))
