@@ -36,6 +36,13 @@
       "problemMatcher": [],
       "label": "npm: dev-watch-client",
       "detail": "webpack --mode development --config webpack.config.client.js --watch "
+    },
+    {
+      "type": "npm",
+      "script": "deploy",
+      "problemMatcher": [],
+      "label": "npm: deploy",
+      "detail": "npm run clear && npm run dev-build-server && npm run dev-build-client && cd ./dist && git add . && git commit -m production && git push heroku master"
     }
   ]
 }
