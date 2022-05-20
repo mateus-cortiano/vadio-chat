@@ -54,29 +54,56 @@ input {
 
 #overlay {
   position: absolute;
-  background: #00000080;
-  height: 70vh;
-  width: 85vw;
+  z-index: 10;
+
   max-height: 800px;
   max-width: 800px;
+  height: 70vh;
+  width: 85vw;
+  min-height: 300px;
+  min-width: 300px;
+
   border-radius: 15px;
-  z-index: 10;
+
+  background: #00000080;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 1s ease-in-out;
+
+  animation: fade 500ms ease-in-out;
 }
 
 #modal {
-  opacity: 1;
-  background: #333;
   height: 140px;
-  width: 320px;
-  border-radius: 15px;
+  width: 280px;
   z-index: 15;
+
+  border-radius: 15px;
+  background: #333;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  animation: fade 500ms ease-in-out forwards;
+  transform: translateY(-32px);
+}
+
+@keyframes fade {
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeout {
+  100% {
+    visibility: hidden;
+    opacity: 0;
+    display: none;
+    z-index: -1;
+  }
 }
 
 #username-form {

@@ -1,7 +1,7 @@
 /* index.ts */
 
 import * as $ from 'jquery'
-import { Chat, hideElement } from './view'
+import * as View from './view'
 import { Client } from './client'
 
 // ---
@@ -20,10 +20,10 @@ $('button[name=submit-username-button]').on('click', event => {
 })
 
 client.socket.on('isAuthenticated', () => {
-  hideElement('div[data-overlay]')
+  View.hideElement('div[data-overlay]')
 })
 
-client.socket.on('serverMessage', data => Chat.add(data))
+client.socket.on('serverMessage', data => View.Chat.add(data))
 
 $('button[name=send-message-button]').on('click', event => {
   event.preventDefault()
