@@ -51,6 +51,30 @@ function createDiv(classes: string, content: string, id: string = '') {
   return element
 }
 
+export function fadeElement(html: string, duration: number = 1000) {
+  $(html).attr('style', `animation: fadeout ${duration}ms ease forwards`)
+}
+
+export function fadeInElement(html: string, duration: number = 1000) {
+  $(html).attr('style', `animation: fade ${duration}ms ease forwards`)
+}
+
+export function displayElement(html: string) {
+  $(html).attr('style', `display: block`)
+}
+
 export function hideElement(html: string) {
-  $(html).attr('style', 'animation: fadeout 1000ms ease forwards')
+  $(html).attr('style', `display: none`)
+}
+
+export function showError(err: string) {
+  let attribute = 'div[data-error]'
+  $(attribute).text(err)
+  displayElement(attribute)
+}
+
+export function hideError() {
+  let attribute = 'div[data-error]'
+  $(attribute).text('')
+  hideElement(attribute)
 }

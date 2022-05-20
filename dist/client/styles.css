@@ -2,7 +2,7 @@
 
 * {
   font-family: Cascadia Mono, monospace;
-  font-size: 12px;
+  font-size: minmax(12px, 1.3rem);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -18,6 +18,7 @@ body {
 }
 
 button {
+  /* font-size: calc(1rem + 1.5vw); */
   font-family: Cascadia Mono, monospace;
   color: white;
   background: #283e84;
@@ -92,6 +93,24 @@ input {
   transform: translateY(-32px);
 }
 
+#modal-block {
+  position: absolute;
+  z-index: 15;
+
+  height: 140px;
+  width: 280px;
+
+  background: #00000080;
+  border-radius: 15px;
+
+  display: none;
+}
+
+#error-message {
+  font-size: 12px !important;
+  transform: translateY(20px);
+}
+
 @keyframes fade {
   100% {
     opacity: 1;
@@ -120,14 +139,13 @@ input {
 
 #username-input {
   border-radius: 12px 0px 0px 12px;
-  font-size: 16px;
+  font-size: 1.3rem;
   height: 38px;
   padding-left: 12px;
 }
 
 #submit-username-button {
   border-radius: 0px 12px 12px 0px;
-  font-size: 14px;
   height: 38px;
   width: 38px;
   font-weight: light;
@@ -175,14 +193,12 @@ input {
   display: grid;
   grid-template-columns: 1fr minmax(0, 100%) 1fr;
   height: 100%;
-  font-size: 12px;
 }
 
 #message-prefix {
   background: #0b0c0c;
   border-radius: 10px 0px 0px 10px;
   padding-left: 12px;
-  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -192,7 +208,7 @@ input {
 #message-input {
   width: 100%;
   padding-left: 10px;
-  font-size: 12px;
+  font-size: 1.3rem;
 }
 
 #send-button {
@@ -208,13 +224,13 @@ input {
 /* classes */
 
 .message-box * {
-  font-size: 12px;
+  font-size: 1.3rem;
 }
 
 .message-box {
   width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr minmax(0, 100%);
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 50fr;
   padding: 2px 0px 2px 0px;
 }
 
@@ -225,6 +241,10 @@ input {
 .message-box-timestamp {
   /* color: #2e3232; */
   color: #666;
+}
+
+.message-box-content {
+  word-wrap: normal;
 }
 
 /* utilities */

@@ -16,11 +16,17 @@ $('button[name=submit-username-button]').on('click', event => {
 
   if (!content) return
 
+  View.displayElement('div[data-modalblock]')
   client.socket.emit('sendUsername', content)
 })
 
-client.socket.on('isAuthenticated', () => {
-  View.hideElement('div[data-overlay]')
+client.socket.on('isAuthenticated', data => {
+  if (data.err) {
+    View.hideElement('div[data-modalblock]')
+    View.showError('> ' + data.err)
+    return
+  }
+  View.fadeElement('div[data-overlay]')
 })
 
 client.socket.on('serverMessage', data => View.Chat.add(data))

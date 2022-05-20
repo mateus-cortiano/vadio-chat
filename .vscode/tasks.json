@@ -9,8 +9,7 @@
         "isDefault": true
       },
       "problemMatcher": [],
-      "label": "npm: dev-watch-server",
-      "detail": "tsc --watch "
+      "label": "npm: dev-watch-server"
     },
     {
       "type": "npm",
@@ -18,7 +17,6 @@
       "group": "build",
       "problemMatcher": [],
       "label": "npm: dev-buildrun-server",
-      "detail": "npm run dev-build-server && npm run dev-run-server",
       "options": {
         "env": {
           "NAME": "#VADIO",
@@ -34,15 +32,13 @@
       "script": "dev-watch-client",
       "group": "build",
       "problemMatcher": [],
-      "label": "npm: dev-watch-client",
-      "detail": "webpack --mode development --config webpack.config.client.js --watch "
+      "label": "npm: dev-watch-client"
     },
     {
       "type": "npm",
       "script": "deploy",
       "problemMatcher": [],
-      "label": "npm: deploy",
-      "detail": "npm run clear && npm run dev-build-server && npm run dev-build-client && cd ./dist && git add . && git commit -m production && git push heroku master"
+      "label": "npm: deploy"
     }
   ]
 }

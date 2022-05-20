@@ -15,14 +15,20 @@ server.io.on('connection', socket => {
   socket.emit('connected', socket.id)
 
   socket.on('sendUsername', un => {
+    if (un.toLowerCase() === env.name.toLowerCase()) {
+      socket.emit('isAuthenticated', { err: `Invalid username: ${un}` })
+      return
+    }
+
     username = un
+
     let message = new Message(
       env.name,
       `${username} connected`,
       'serverMessage'
     )
 
-    socket.emit('isAuthenticated')
+    socket.emit('isAuthenticated', {})
     server.io.emit('serverMessage', message)
   })
 

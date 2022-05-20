@@ -5,7 +5,7 @@
 export interface ServerToClientEvents {
   connected: (id: string) => void
   serverMessage: (d: SocketData) => void
-  isAuthenticated: () => void
+  isAuthenticated: (d: AuthenticationData) => void
 }
 
 export interface ClientToServerEvents {
@@ -22,4 +22,8 @@ export interface SocketData {
   author: string
   content: string
   event: string
+}
+
+export interface AuthenticationData {
+  err?: string
 }
