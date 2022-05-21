@@ -4,6 +4,7 @@ import * as $ from 'jquery'
 import * as View from './view'
 import { Client } from './client'
 import { SocketData } from '../interfaces/socket'
+import { isValid, notEmpty, notWhiteSpace } from '../lib/validators'
 
 // ---
 
@@ -13,18 +14,18 @@ const chatWindow = new View.ChatWindow(parent)
 const loginWindow = new View.LoginWindow(parent)
 
 let username: string
+let inputValidators = [notEmpty, notWhiteSpace]
 
 chatWindow.disableInputs()
 
 client.onConnected((data: SocketData) => {
-  chatWindow.setTitle(data.hostname)
-  chatWindow.setHostName(data.hostname)
+  chatWindow.setTitle(data.hostname).setHostName(data.hostname)
 })
 
-loginWindow.onSubmit(event => {
+loginWindow.onSubmit((event: JQuery.ClickEvent) => {
   event.preventDefault()
 
-  if (!loginWindow.currentInput) return
+  if (!isValid(loginWindow.currentInput, ...inputValidators)) return
 
   username = loginWindow.currentInput
 
@@ -47,10 +48,8 @@ client.onAuth((authentication: SocketData) => {
 chatWindow.onSendMessage(event => {
   event.preventDefault()
 
-  if (!username) return
-  if (!chatWindow.currentInput) return
+  if (!isValid(chatWindow.currentInput, ...inputValidators)) return
 
-  client.emitMessage(chatWindow.currentInput)
   chatWindow.clearInput()
 })
 

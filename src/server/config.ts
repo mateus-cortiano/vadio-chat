@@ -1,9 +1,13 @@
 /* config.ts */
 
 import { env } from 'process'
-import { validateSetter, isTCPPort } from '../lib/validators'
+import { isTCPPort } from '../lib/validators'
 
 // ---
+
+const DEFAULT_NAME = 'chat'
+const DEFAULT_PORT = 5500
+const DEFAULT_MODE: Mode = 'development'
 
 export enum Modes {
   'development',
@@ -15,8 +19,8 @@ export type Mode = keyof typeof Modes
 const MODES = Object.keys(Modes)
 
 export class Environment {
-  private _port: number = 3000
-  private _mode: Mode
+  readonly port: number
+  readonly mode: Mode
   readonly name: string
   readonly public_path: string
   readonly db_host: string
@@ -25,32 +29,14 @@ export class Environment {
   readonly db_name: string
 
   constructor() {
-    this.port = Number(env.PORT || 5500)
-    this.mode = (env.NODE_ENV || 'development') as Mode
-    this.name = env.APPLICATION_NAME
+    this.port = Number(isTCPPort(env.PORT) ? env.PORT : DEFAULT_PORT)
+    this.mode = isValidMode(env.NODE_ENV) ? env.NODE_ENV : DEFAULT_MODE
+    this.name = env.APPLICATION_NAME || DEFAULT_NAME
     this.db_host = env.APPLICATION_DB_HOST
     this.db_pass = env.APPLICATION_DB_PASS
     this.db_user = env.APPLICATION_DB_USER
     this.db_name = env.APPLICATION_DB_NAME
     this.public_path = env.APPLICATION_PUBLIC_PATH
-  }
-
-  public get port() {
-    return this._port
-  }
-
-  public get mode() {
-    return this._mode
-  }
-
-  @validateSetter(isTCPPort)
-  private set port(value: number) {
-    this._port = value
-  }
-
-  @validateSetter(isValidMode)
-  private set mode(value: Mode) {
-    this._mode = value
   }
 }
 

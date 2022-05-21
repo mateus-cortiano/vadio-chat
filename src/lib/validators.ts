@@ -1,23 +1,18 @@
 /* validators.ts */
 
-type Validator = (subject: any) => boolean
+export type Validator = (subject: any) => boolean
 
-class ValidationError extends Error {
-  name = 'ValidationError'
-
-  constructor(
-    value: string,
-    property: string,
-    instance: object,
-    validator: Validator
-  ) {
-    super(
-      `${validator.name}: '${value}' is not valid for '${instance.constructor.name}.${property}'`
-    )
-  }
+export function assert(value: any, ...validators: Validator[]) {
+  for (let validator of validators)
+    if (!validator(value)) throw new ValidationError(value, validator)
 }
 
-export function validateSetter(...validators: Validator[]) {
+export function isValid(value: any, ...validators: Validator[]) {
+  for (let validator of validators) if (!validator(value)) return false
+  return true
+}
+
+export function assertSetter(...validators: Validator[]) {
   return function (
     target: object,
     propertyKey: string,
@@ -26,13 +21,24 @@ export function validateSetter(...validators: Validator[]) {
     const setter = descriptor.set
 
     descriptor.set = function (this: any, value: any) {
-      for (let validator of validators) {
-        if (!validator(value))
-          throw new ValidationError(value, propertyKey, this, validator)
-      }
-
+      assert(value, ...validators)
       setter.call(this, value)
     }
+  }
+}
+
+class ValidationError extends Error {
+  name = 'ValidationError'
+
+  constructor(
+    value: string,
+    validator: Validator,
+    property?: string,
+    instance?: object
+  ) {
+    super(
+      `${validator.name}: '${value}' is not valid for '${instance.constructor.name}.${property}'`
+    )
   }
 }
 
@@ -63,6 +69,26 @@ export function isIPAddress(subject: string): boolean {
 const MIN_TCP_PORT = 0
 const MAX_TCP_PORT = 65535
 
-export function isTCPPort(subject: number): boolean {
-  return subject >= MIN_TCP_PORT && subject <= MAX_TCP_PORT
+export function isTCPPort(subject: any): boolean {
+  return (
+    typeof subject === 'number' &&
+    subject >= MIN_TCP_PORT &&
+    subject <= MAX_TCP_PORT
+  )
+}
+
+/* Input Validators */
+
+export function notEmpty(subject: any): boolean {
+  return subject !== ''
+}
+
+export function notEquals(thisname: string): Validator {
+  return function (subject: any) {
+    return subject !== thisname
+  }
+}
+
+export function notWhiteSpace(subject: string): boolean {
+  return !(subject.trim() === '')
 }

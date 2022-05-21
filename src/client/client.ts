@@ -5,13 +5,17 @@ import { SocketData } from '../interfaces/socket'
 import { Message } from '../lib/message'
 
 export class Client {
-  private id: string
+  private _id: string
   public socket: Socket
 
   constructor(readonly host: string = '', readonly port: number | null = null) {
     this.socket = io({ withCredentials: true })
 
-    this.socket.on('connected', id => (this.id = id))
+    this.socket.on('connected', id => (this._id = id))
+  }
+
+  get id() {
+    return this._id
   }
 
   public emitMessage(content: string) {
