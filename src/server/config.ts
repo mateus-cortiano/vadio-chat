@@ -23,7 +23,7 @@ export class Environment {
   readonly db_pass: string
 
   constructor() {
-    this.name = env.NAME
+    this.name = env.APPLICATION_NAME
     this.port = Number(env.PORT || 5500)
     this.mode = (env.NODE_ENV || 'development') as Mode
     this.public_path = env.APPLICATION_PUBLIC_PATH

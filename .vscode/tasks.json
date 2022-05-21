@@ -2,26 +2,20 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "npm",
-      "script": "dev-watch-server",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
+      "type": "shell",
+      "command": [
+        "npm run clear;",
+        "npm install;",
+        "npm run build;",
+        "npm run serve;"
+      ],
+      "label": "npm: build and serve",
       "problemMatcher": [],
-      "label": "npm: dev-watch-server"
-    },
-    {
-      "type": "npm",
-      "script": "dev-buildrun-server",
-      "group": "build",
-      "problemMatcher": [],
-      "label": "npm: dev-buildrun-server",
       "options": {
         "env": {
-          "NAME": "#VADIO",
           "PORT": "5500",
           "NODE_ENV": "development",
+          "APPLICATION_NAME": "#VADIO",
           "APPLICATION_VIEWS_PATH ": "../client",
           "APPLICATION_PUBLIC_PATH": "../client",
           "APPLICATION_DB_HOST": "localhost",
@@ -30,29 +24,9 @@
       }
     },
     {
-      "type": "npm",
-      "script": "dev-watch-client",
-      "group": "build",
-      "problemMatcher": [],
-      "label": "npm: dev-watch-client"
-    },
-    {
-      "type": "npm",
-      "script": "deploy",
-      "problemMatcher": [],
-      "label": "npm: deploy"
-    },
-    {
-      "type": "npm",
-      "script": "heroku-logs",
-      "problemMatcher": [],
-      "label": "npm: read heroku logs"
-    },
-    {
       "type": "shell",
-      "dependsOrder": "sequence",
-      "dependsOn": ["npm: deploy", "npm: read heroku logs"],
-      "label": "npm: deploy to heroku & log",
+      "command": ["npm run deploy;", "npm run heroku-logs"],
+      "label": "npm/heroku: deploy and watch logs",
       "problemMatcher": []
     }
   ]
