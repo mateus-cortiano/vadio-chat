@@ -1,5 +1,5 @@
 ```
 npm install
-npm run dev-build-client
-npm run dev-buildrun-server
+npm run build
+npm run serve
 ```
