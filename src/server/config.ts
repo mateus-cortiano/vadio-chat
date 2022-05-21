@@ -14,7 +14,7 @@ export type Mode = keyof typeof Modes
 
 const MODES = Object.keys(Modes)
 
-export class Configuration {
+export class Environment {
   private _port: number = 3000
   private _mode: Mode
   readonly name: string

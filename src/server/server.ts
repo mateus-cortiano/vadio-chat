@@ -45,11 +45,16 @@ export class Server {
 
     this.io.on('connection', socket => {
       this.logger.info(` * ${socket.id} connected`)
-
-      socket.on('clientMessage', data => {
-        this.logger.info(` > ${data.author}: ${data.content}`)
-      })
     })
+  }
+
+  public emitMessage(message: SocketData) {
+    this.logger.info(` > ${message.author}: ${message.content}`)
+    this.io.emit('serverMessage', message)
+  }
+
+  public onConnection(callback: (socket: socketio.Socket) => void) {
+    this.io.on('connection', callback)
   }
 
   public start() {
