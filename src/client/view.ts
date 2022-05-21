@@ -62,15 +62,18 @@ export class ChatWindow {
 
   setTitle(title: string) {
     this.titlebar.text(title)
+    return this
   }
 
   setHostName(hostname: string) {
     this.hostname = hostname
+    return this
   }
 
   setUserName(username: string) {
     this.username = username
     this.inputPrefix.text(`${username.substring(0, 12)}>`)
+    return this
   }
 
   public get currentInput() {
@@ -79,6 +82,7 @@ export class ChatWindow {
 
   public clearInput() {
     this.messageInput.val('')
+    return this
   }
 
   public getInputAndClear() {
@@ -87,8 +91,21 @@ export class ChatWindow {
     return value
   }
 
+  public enableInputs() {
+    this.sendButton.removeAttr('disabled')
+    this.messageInput.removeAttr('disabled')
+    return this
+  }
+
+  public disableInputs() {
+    this.sendButton.attr('disabled', '')
+    this.messageInput.attr('disabled', '')
+    return this
+  }
+
   public onSendMessage(callback: (event: JQuery.ClickEvent) => void) {
     this.sendButton.on('click', callback)
+    return this
   }
 
   public addMessage(message: Message) {
@@ -115,6 +132,7 @@ export class ChatWindow {
     element.append(time, whitespace, author, separator, whitespace2, content)
 
     this.messageContainer.append(element)
+    return this
   }
 }
 
@@ -162,34 +180,40 @@ export class LoginWindow {
   public shakeModal() {
     this.modal.toggleClass('shakeit')
     setTimeout(() => this.modal.toggleClass('shakeit'), 300)
+    return this
   }
 
   public displayError(error: string) {
     this.errorMessage.text(error)
     this.errorMessage.attr('style', 'display: block')
     this.shakeModal()
+    return this
   }
 
   public hideError() {
     this.errorMessage.attr('style', 'display: none')
+    return this
   }
 
   public enableInputs() {
     this.goButton.removeAttr('disabled')
     this.usernameInput.removeAttr('disabled')
+    return this
   }
 
   public disableInputs() {
     this.goButton.attr('disabled', '')
     this.usernameInput.attr('disabled', '')
-    this.usernameInput.attr('style', 'user-select: none;')
+    return this
   }
 
   public hideWindow() {
     this.root.attr('style', 'animation: fadeout 200ms ease-in forwards')
+    return this
   }
 
   public onSubmit(callback: (event: JQuery.ClickEvent) => void) {
     this.goButton.on('click', callback)
+    return this
   }
 }

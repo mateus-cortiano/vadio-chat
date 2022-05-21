@@ -14,6 +14,8 @@ const loginWindow = new View.LoginWindow(parent)
 
 let username: string
 
+chatWindow.disableInputs()
+
 client.onConnected((data: SocketData) => {
   chatWindow.setTitle(data.hostname)
   chatWindow.setHostName(data.hostname)
@@ -38,12 +40,14 @@ client.onAuth((authentication: SocketData) => {
   }
 
   chatWindow.setUserName(username)
+  chatWindow.enableInputs()
   loginWindow.hideWindow()
 })
 
 chatWindow.onSendMessage(event => {
   event.preventDefault()
 
+  if (!username) return
   if (!chatWindow.currentInput) return
 
   client.emitMessage(chatWindow.currentInput)
