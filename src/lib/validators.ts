@@ -70,11 +70,7 @@ const MIN_TCP_PORT = 0
 const MAX_TCP_PORT = 65535
 
 export function isTCPPort(subject: any): boolean {
-  return (
-    typeof subject === 'number' &&
-    subject >= MIN_TCP_PORT &&
-    subject <= MAX_TCP_PORT
-  )
+  return subject >= MIN_TCP_PORT && subject <= MAX_TCP_PORT
 }
 
 /* Input Validators */

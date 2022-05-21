@@ -9,6 +9,7 @@ import {
   trimString
 } from '../lib/sanitizers'
 import { isValid, notEmpty, notEquals } from '../lib/validators'
+import { Model } from './model'
 
 // ---
 
@@ -23,19 +24,30 @@ server.onConnection(socket => {
   socket.emit('connected', new Message('', '', '', env.name))
 
   socket.on('sendUsername', username => {
-    username = sanitize(username, trimString, maxLength(MAX_USERNAME_LENGTH))
+    if (Model.userCount >= env.max_users) {
+      socket.emit('isAuthenticated', new ErrorMessage('Room is full'))
+      return
+    }
 
-    console.log(username)
+    username = sanitize(username, trimString, maxLength(MAX_USERNAME_LENGTH))
 
     if (!isValid(username, notEmpty, notEquals(env.name))) {
       socket.emit('isAuthenticated', new ErrorMessage('Invalid Username'))
       return
     }
 
-    sock_username = username
+    if (Model.userExists(username)) {
+      socket.emit(
+        'isAuthenticated',
+        new ErrorMessage('Username already in use')
+      )
+      return
+    }
 
+    sock_username = username
     let message = new Message(`${sock_username} connected`, env.name)
 
+    Model.addUser(sock_username)
     socket.emit('isAuthenticated', EmptyMessage)
     server.emitMessage(message)
   })
@@ -43,6 +55,10 @@ server.onConnection(socket => {
   socket.on('clientMessage', data => {
     if (sock_username === null) return
     server.emitMessage(new Message(data.content, sock_username))
+  })
+
+  socket.on('disconnect', () => {
+    Model.removeUser(sock_username)
   })
 })
 

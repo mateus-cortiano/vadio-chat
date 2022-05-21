@@ -50,6 +50,7 @@ chatWindow.onSendMessage(event => {
 
   if (!isValid(chatWindow.currentInput, ...inputValidators)) return
 
+  client.emitMessage(chatWindow.currentInput)
   chatWindow.clearInput()
 })
 

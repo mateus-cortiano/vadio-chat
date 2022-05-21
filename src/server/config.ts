@@ -8,6 +8,7 @@ import { isTCPPort } from '../lib/validators'
 const DEFAULT_NAME = 'chat'
 const DEFAULT_PORT = 5500
 const DEFAULT_MODE: Mode = 'development'
+const DEFAULT_MAX_USERS = 12
 
 export enum Modes {
   'development',
@@ -27,6 +28,7 @@ export class Environment {
   readonly db_pass: string
   readonly db_user: string
   readonly db_name: string
+  readonly max_users: number
 
   constructor() {
     this.port = Number(isTCPPort(env.PORT) ? env.PORT : DEFAULT_PORT)
@@ -37,6 +39,7 @@ export class Environment {
     this.db_user = env.APPLICATION_DB_USER
     this.db_name = env.APPLICATION_DB_NAME
     this.public_path = env.APPLICATION_PUBLIC_PATH
+    this.max_users = Number(env.APPLICATION_MAX_USERS) || DEFAULT_MAX_USERS
   }
 }
 
