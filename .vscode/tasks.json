@@ -20,7 +20,7 @@
       "options": {
         "env": {
           "NAME": "#VADIO",
-          "PORT": "3000",
+          "PORT": "5500",
           "NODE_ENV": "development",
           "APPLICATION_VIEWS_PATH ": "../client",
           "APPLICATION_PUBLIC_PATH": "../client"

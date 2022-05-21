@@ -10,48 +10,49 @@ import { SocketData } from '../interfaces/socket'
 
 const client = new Client()
 const parent = $('div[name=application]')
-const mainView = new View.MainWindow(parent)
-const loginView = new View.LoginWindow(parent)
+const mainWindow = new View.MainWindow(parent)
+const loginWindow = new View.LoginWindow(parent)
 
 let username: string
 
 client.socket.on('connected', (data: SocketData) => {
-  mainView.setTitle('#vadio')
-  mainView.setHostName(data.hostname)
+  mainWindow.setTitle(data.hostname)
+  mainWindow.setHostName(data.hostname)
 })
 
-loginView.onsend(event => {
+loginWindow.onSendMessage(event => {
   event.preventDefault()
 
-  if (!loginView.currentInput) return
+  if (!loginWindow.currentInput) return
 
-  username = loginView.currentInput
+  username = loginWindow.currentInput
 
-  loginView.disableInputs()
+  loginWindow.disableInputs()
   client.socket.emit('sendUsername', username)
 })
 
 client.socket.on('isAuthenticated', (data: SocketData) => {
   if (data.err) {
-    loginView.displayError(data.err)
-    loginView.enableInputs()
+    loginWindow.displayError(data.err)
+    loginWindow.enableInputs()
     return
   }
 
-  loginView.hideWindow()
-  mainView.setUserName(username)
+  mainWindow.setUserName(username)
+  loginWindow.hideWindow()
 })
 
 client.socket.on('serverMessage', (message: SocketData) => {
-  mainView.addMessage(message)
+  mainWindow.addMessage(message)
 })
 
-mainView.onsend(event => {
+mainWindow.onSendUserName(event => {
   event.preventDefault()
 
-  if (!mainView.currentInput) return
+  if (!mainWindow.currentInput) return
 
-  let message = new Message('', mainView.currentInput)
-  mainView.clearInput()
+  let message = new Message('', mainWindow.currentInput)
+
   client.socket.emit('clientMessage', message)
+  mainWindow.clearInput()
 })
