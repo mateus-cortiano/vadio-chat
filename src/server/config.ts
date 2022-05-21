@@ -24,8 +24,8 @@ export class Environment {
 
   constructor() {
     this.name = env.NAME
-    this.port = Number(env.PORT)
-    this.mode = env.NODE_ENV as Mode
+    this.port = Number(env.PORT || 5500)
+    this.mode = (env.NODE_ENV || 'development') as Mode
     this.public_path = env.APPLICATION_PUBLIC_PATH
     this.db_host = env.APPLICATION_DB_HOST
     this.db_pass = env.APPLICATIION_DB_PASS
