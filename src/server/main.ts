@@ -3,7 +3,6 @@
 import { Server } from './server'
 import { Environment } from './config'
 import { Message, ErrorMessage, EmptyMessage } from '../lib/message'
-import * as db from './db'
 
 // ---
 

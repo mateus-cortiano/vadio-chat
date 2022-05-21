@@ -1,7 +1,7 @@
 /* config.ts */
 
 import { env } from 'process'
-import { validateSetter, isIPAddress, isTCPPort } from '../lib/validators'
+import { validateSetter, isTCPPort } from '../lib/validators'
 
 // ---
 
