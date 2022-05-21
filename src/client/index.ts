@@ -3,7 +3,6 @@
 import * as $ from 'jquery'
 import * as View from './view'
 import { Client } from './client'
-import { Message } from '../lib/message'
 import { SocketData } from '../interfaces/socket'
 
 // ---

@@ -39,6 +39,19 @@
       "script": "deploy",
       "problemMatcher": [],
       "label": "npm: deploy"
+    },
+    {
+      "type": "npm",
+      "script": "heroku-logs",
+      "problemMatcher": [],
+      "label": "npm: read heroku logs"
+    },
+    {
+      "type": "shell",
+      "dependsOrder": "sequence",
+      "dependsOn": ["npm: deploy", "npm: read heroku logs"],
+      "label": "npm: deploy to heroku & log",
+      "problemMatcher": []
     }
   ]
 }
