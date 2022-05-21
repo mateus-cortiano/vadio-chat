@@ -43,7 +43,7 @@ export class Server {
         res.render('index.html')
       })
 
-    this.io.on('connection', socket => {
+    this.onConnection(socket => {
       this.logger.info(` * ${socket.id} connected`)
     })
   }
@@ -58,8 +58,7 @@ export class Server {
   }
 
   public start() {
-    this.logger.info(` * server starting`)
-    this.logger.info(` * listening to port: ${this.port}.`)
+    this.logger.info(` * server starting @ port ${this.port}`)
     this.server.listen(this.port)
   }
 }
