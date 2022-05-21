@@ -1,7 +1,6 @@
 /* chat.ts */
 
 import * as $ from 'jquery'
-import { Message } from '../lib/message'
 import { getLocaleTimeString, shortTimeOpts } from '../lib/timestamp'
 
 // ---

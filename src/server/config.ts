@@ -19,12 +19,16 @@ export class Environment {
   private _mode: Mode
   readonly name: string
   readonly public_path: string
+  readonly db_host: string
+  readonly db_pass: string
 
   constructor() {
     this.name = env.NAME
     this.port = Number(env.PORT)
     this.mode = env.NODE_ENV as Mode
     this.public_path = env.APPLICATION_PUBLIC_PATH
+    this.db_host = env.APPLICATION_DB_HOST
+    this.db_pass = env.APPLICATIION_DB_PASS
   }
 
   public get port() {
