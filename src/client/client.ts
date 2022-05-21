@@ -15,7 +15,7 @@ export class Client {
   }
 
   public emitMessage(content: string) {
-    let message = new Message('', content)
+    let message = new Message(content)
     this.socket.emit('clientMessage', message)
   }
 

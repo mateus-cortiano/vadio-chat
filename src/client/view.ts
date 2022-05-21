@@ -108,28 +108,20 @@ export class ChatWindow {
     return this
   }
 
-  public addMessage(message: Message) {
-    let timestamp = getLocaleTimeString(message.timestamp, shortTimeOpts)
+  public addMessage(author: string, content: string, timestamp: number) {
+    let localeTime = getLocaleTimeString(timestamp, shortTimeOpts)
 
     let element = create('p').attr('name', 'message-line')
-    let time = create('span').text(timestamp).attr('name', 'message-time')
-    let author = create('span')
-      .text(message.author)
-      .attr('name', 'message-author')
-    let content = create('span')
-      .text(message.content)
-      .attr('name', 'message-content')
-    let separator = create('span').text(':').attr('name', 'message-sep')
-    let whitespace = create('span').text(' ')
-    let whitespace2 = create('span').text(' ')
+    let timeEl = create('span').text(localeTime).attr('name', 'message-time')
+    let authorEl = create('span').text(author).attr('name', 'message-author')
+    let contentEl = create('span').text(content).attr('name', 'message-content')
+    let separatorEl = create('span').text(': ').attr('name', 'message-sep')
+    let whitespaceEl = create('span').text(' ')
 
-    if (message.author === this.username)
-      author.attr('data-msg-author-is-self', '')
+    if (author === this.username) authorEl.attr('data-msg-author-is-self', '')
+    if (author === this.hostname) authorEl.attr('data-msg-author-is-host', '')
 
-    if (message.author === this.hostname)
-      author.attr('data-msg-author-is-host', '')
-
-    element.append(time, whitespace, author, separator, whitespace2, content)
+    element.append(timeEl, whitespaceEl, authorEl, separatorEl, contentEl)
 
     this.messageContainer.append(element)
     return this
@@ -186,6 +178,7 @@ export class LoginWindow {
   public displayError(error: string) {
     this.errorMessage.text(error)
     this.errorMessage.attr('style', 'display: block')
+    setTimeout(() => this.errorMessage.attr('style', 'display: none'), 5000)
     this.shakeModal()
     return this
   }

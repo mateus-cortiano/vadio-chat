@@ -208,6 +208,7 @@ div[name="app-login-error"] {
   display: none;
   padding-top: 15px;
   color: #ccc;
+  font-size: 12px;
 }
 
 button[name="app-login-button"] {

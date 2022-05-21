@@ -15,7 +15,7 @@ export function getNowTimeString(opts = defaultOpts): string {
 }
 
 export function getLocaleTimeString(
-  timestamp: number,
+  timestamp: string | number | Date,
   opts = defaultOpts
 ): string {
   return new Date(timestamp).toLocaleTimeString(undefined, opts)

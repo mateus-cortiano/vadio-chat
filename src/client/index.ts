@@ -55,5 +55,5 @@ chatWindow.onSendMessage(event => {
 })
 
 client.onServerMessage((message: SocketData) => {
-  chatWindow.addMessage(message)
+  chatWindow.addMessage(message.author, message.content, message.timestamp)
 })

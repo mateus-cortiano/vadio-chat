@@ -2,7 +2,7 @@
 
 import { Server } from './server'
 import { Environment } from './config'
-import { ErrorMessage, Message } from '../lib/message'
+import { Message, ErrorMessage, EmptyMessage } from '../lib/message'
 
 // ---
 
@@ -22,15 +22,15 @@ server.onConnection(socket => {
 
     sock_username = username
 
-    let message = new Message(env.name, `${sock_username} connected`)
+    let message = new Message(`${sock_username} connected`, env.name)
 
-    socket.emit('isAuthenticated', new Message())
+    socket.emit('isAuthenticated', EmptyMessage)
     server.emitMessage(message)
   })
 
   socket.on('clientMessage', data => {
     if (sock_username === null) return
-    let message = new Message(sock_username, data.content)
+    let message = new Message(data.content, sock_username)
     server.emitMessage(message)
   })
 })

@@ -8,8 +8,8 @@ export class Message implements SocketData {
   readonly timestamp: number
 
   constructor(
-    readonly author: string = '',
     readonly content: string = '',
+    readonly author: string = '',
     readonly err: string = '',
     readonly hostname: string = ''
   ) {
@@ -22,3 +22,5 @@ export class ErrorMessage extends Message {
     super('', '', err)
   }
 }
+
+export const EmptyMessage = new Message()
