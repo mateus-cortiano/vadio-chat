@@ -10,17 +10,17 @@ import { SocketData } from '../interfaces/socket'
 
 const client = new Client()
 const parent = $('div[name=application]')
-const mainWindow = new View.MainWindow(parent)
+const chatWindow = new View.ChatWindow(parent)
 const loginWindow = new View.LoginWindow(parent)
 
 let username: string
 
-client.socket.on('connected', (data: SocketData) => {
-  mainWindow.setTitle(data.hostname)
-  mainWindow.setHostName(data.hostname)
+client.onConnected((data: SocketData) => {
+  chatWindow.setTitle(data.hostname)
+  chatWindow.setHostName(data.hostname)
 })
 
-loginWindow.onSendMessage(event => {
+loginWindow.onSubmit(event => {
   event.preventDefault()
 
   if (!loginWindow.currentInput) return
@@ -28,31 +28,29 @@ loginWindow.onSendMessage(event => {
   username = loginWindow.currentInput
 
   loginWindow.disableInputs()
-  client.socket.emit('sendUsername', username)
+  client.sendUserName(username)
 })
 
-client.socket.on('isAuthenticated', (data: SocketData) => {
-  if (data.err) {
-    loginWindow.displayError(data.err)
+client.onAuth((authentication: SocketData) => {
+  if (authentication.err) {
+    loginWindow.displayError(authentication.err)
     loginWindow.enableInputs()
     return
   }
 
-  mainWindow.setUserName(username)
+  chatWindow.setUserName(username)
   loginWindow.hideWindow()
 })
 
-client.socket.on('serverMessage', (message: SocketData) => {
-  mainWindow.addMessage(message)
-})
-
-mainWindow.onSendUserName(event => {
+chatWindow.onSendMessage(event => {
   event.preventDefault()
 
-  if (!mainWindow.currentInput) return
+  if (!chatWindow.currentInput) return
 
-  let message = new Message('', mainWindow.currentInput)
+  client.emitMessage(chatWindow.currentInput)
+  chatWindow.clearInput()
+})
 
-  client.socket.emit('clientMessage', message)
-  mainWindow.clearInput()
+client.onServerMessage((message: SocketData) => {
+  chatWindow.addMessage(message)
 })

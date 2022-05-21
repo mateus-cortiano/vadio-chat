@@ -10,7 +10,7 @@ function create(tagName: string): JQuery<HTMLElement> {
   return $(document.createElement(tagName))
 }
 
-export class MainWindow {
+export class ChatWindow {
   private username: string
   private hostname: string
   private root: JQuery<HTMLElement>
@@ -87,7 +87,7 @@ export class MainWindow {
     return value
   }
 
-  public onSendUserName(callback: (event: JQuery.ClickEvent) => void) {
+  public onSendMessage(callback: (event: JQuery.ClickEvent) => void) {
     this.sendButton.on('click', callback)
   }
 
@@ -138,6 +138,7 @@ export class LoginWindow {
       .attr('name', 'app-login-userinput')
       .attr('autocomplete', 'off')
       .attr('placeholder', 'username')
+      .attr('maxlength', '12')
     this.goButton = create('button').attr('name', 'app-login-button').text('GO')
     this.errorMessage = create('div').attr('name', 'app-login-error')
 
@@ -158,37 +159,37 @@ export class LoginWindow {
     return this.usernameInput.val() as string
   }
 
-  shakeModal() {
+  public shakeModal() {
     this.modal.toggleClass('shakeit')
     setTimeout(() => this.modal.toggleClass('shakeit'), 300)
   }
 
-  displayError(error: string) {
+  public displayError(error: string) {
     this.errorMessage.text(error)
     this.errorMessage.attr('style', 'display: block')
     this.shakeModal()
   }
 
-  hideError() {
+  public hideError() {
     this.errorMessage.attr('style', 'display: none')
   }
 
-  enableInputs() {
+  public enableInputs() {
     this.goButton.removeAttr('disabled')
     this.usernameInput.removeAttr('disabled')
   }
 
-  disableInputs() {
+  public disableInputs() {
     this.goButton.attr('disabled', '')
     this.usernameInput.attr('disabled', '')
     this.usernameInput.attr('style', 'user-select: none;')
   }
 
-  hideWindow() {
+  public hideWindow() {
     this.root.attr('style', 'animation: fadeout 200ms ease-in forwards')
   }
 
-  onSendMessage(callback: (event: JQuery.ClickEvent) => void) {
+  public onSubmit(callback: (event: JQuery.ClickEvent) => void) {
     this.goButton.on('click', callback)
   }
 }
