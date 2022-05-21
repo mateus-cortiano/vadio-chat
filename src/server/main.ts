@@ -30,8 +30,7 @@ server.onConnection(socket => {
 
   socket.on('clientMessage', data => {
     if (sock_username === null) return
-    let message = new Message(data.content, sock_username)
-    server.emitMessage(message)
+    server.emitMessage(new Message(data.content, sock_username))
   })
 })
 
