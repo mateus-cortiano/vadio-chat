@@ -15,7 +15,7 @@ server.onConnection(socket => {
   socket.emit('connected', new Message('', '', '', env.name))
 
   socket.on('sendUsername', username => {
-    if (username.toLowerCase() === env.name.toLowerCase()) {
+    if (!username || username.toLowerCase() === env.name.toLowerCase()) {
       socket.emit('isAuthenticated', new ErrorMessage('Invalid Username'))
       return
     }
