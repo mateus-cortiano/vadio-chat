@@ -1,4 +1,5 @@
 /.archive
+/.vscode
 /dist/**/*.js
 /dist/package.json
 /node_modules

@@ -21,14 +21,18 @@ export class Environment {
   readonly public_path: string
   readonly db_host: string
   readonly db_pass: string
+  readonly db_user: string
+  readonly db_name: string
 
   constructor() {
-    this.name = env.APPLICATION_NAME
     this.port = Number(env.PORT || 5500)
     this.mode = (env.NODE_ENV || 'development') as Mode
-    this.public_path = env.APPLICATION_PUBLIC_PATH
+    this.name = env.APPLICATION_NAME
     this.db_host = env.APPLICATION_DB_HOST
-    this.db_pass = env.APPLICATIION_DB_PASS
+    this.db_pass = env.APPLICATION_DB_PASS
+    this.db_user = env.APPLICATION_DB_USER
+    this.db_name = env.APPLICATION_DB_NAME
+    this.public_path = env.APPLICATION_PUBLIC_PATH
   }
 
   public get port() {
