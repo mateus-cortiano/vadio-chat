@@ -35,7 +35,7 @@ export class Server {
     this.app = express()
     this.server = http.createServer(this.app)
     this.io = new socketio.Server(this.server)
-    this.logger = Logger.getLogger(this.constructor.name)
+    this.logger = Logger.get_logger(this.constructor.name)
     this.events = new EventSystem<ServerEvents>()
 
     this.app
@@ -47,7 +47,7 @@ export class Server {
         res.render('index.html')
       })
 
-    this.onConnection(socket => {
+    this.on_connection(socket => {
       this.logger.info(` * ${socket.id} connected`)
 
       socket.on('disconnect', reason => {
@@ -56,12 +56,12 @@ export class Server {
     })
   }
 
-  public emitMessage(message: SocketData) {
+  public emit_message(message: SocketData) {
     this.logger.info(` > ${message.author}: ${message.content}`)
-    this.io.emit('serverMessage', message)
+    this.io.emit('server_message', message)
   }
 
-  public onConnection(callback: (socket: socketio.Socket) => void) {
+  public on_connection(callback: (socket: socketio.Socket) => void) {
     this.io.on('connection', callback)
   }
 

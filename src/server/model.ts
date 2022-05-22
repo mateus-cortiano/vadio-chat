@@ -1,21 +1,21 @@
 /* model.ts */
 
-export class Model {
+export class model {
   private static users: string[] = []
 
-  static get userCount() {
+  static get user_count() {
     return this.users.length
   }
 
-  static userExists(user: string): boolean {
+  static user_exists(user: string): boolean {
     return this.users.includes(user)
   }
 
-  static addUser(user: string) {
+  static add_user(user: string) {
     this.users.push(user)
   }
 
-  static removeUser(user: string) {
+  static remove_user(user: string) {
     this.users = this.users.filter(value => value !== user)
   }
 }

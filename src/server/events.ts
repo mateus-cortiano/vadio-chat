@@ -1,6 +1,6 @@
 /* events.ts */
 
 export interface ServerEvents {
-  userAuthenticated: (username: string) => void
-  userDisconnected: (username: string) => void
+  user_authenticated: (username: string) => void
+  user_disconnected: (username: string) => void
 }

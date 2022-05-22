@@ -1,7 +1,7 @@
 /* chat.ts */
 
 import * as $ from 'jquery'
-import { getLocaleTimeString, shortTimeOpts } from '../lib/timestamp'
+import { get_locale_timestring, short_time_opts } from '../lib/timestamp'
 
 // ---
 
@@ -15,12 +15,12 @@ export class ChatWindow {
   root: JQuery<HTMLElement>
   titlebar: JQuery<HTMLElement>
   content: JQuery<HTMLElement>
-  msgContainerWrap: JQuery<HTMLElement>
-  messageContainer: JQuery<HTMLElement>
-  inputPrefix: JQuery<HTMLElement>
-  inputForm: JQuery<HTMLElement>
-  messageInput: JQuery<HTMLElement>
-  sendButton: JQuery<HTMLElement>
+  message_container_wrap: JQuery<HTMLElement>
+  message_container: JQuery<HTMLElement>
+  input_prefix: JQuery<HTMLElement>
+  input_form: JQuery<HTMLElement>
+  message_input: JQuery<HTMLElement>
+  send_button: JQuery<HTMLElement>
 
   constructor(public parent: JQuery<HTMLElement>) {
     this.hostname = ''
@@ -30,85 +30,85 @@ export class ChatWindow {
     this.titlebar = create('div').attr('name', 'app-titlebar')
     this.content = create('div').attr('name', 'app-content')
 
-    this.msgContainerWrap = create('div').attr(
+    this.message_container_wrap = create('div').attr(
       'name',
       'app-message-container-wrap'
     )
 
-    this.messageContainer = create('div').attr('name', 'app-message-container')
+    this.message_container = create('div').attr('name', 'app-message-container')
 
-    this.inputForm = create('form').attr('name', 'app-input-form')
-    this.inputPrefix = create('div').attr('name', 'app-input-prefix').text('>')
-    this.messageInput = create('input')
+    this.input_form = create('form').attr('name', 'app-input-form')
+    this.input_prefix = create('div').attr('name', 'app-input-prefix').text('>')
+    this.message_input = create('input')
       .attr('name', 'app-message-input')
       .attr('autocomplete', 'off')
-    this.sendButton = create('button')
+    this.send_button = create('button')
       .attr('name', 'app-send-button')
       .text('SEND')
 
-    this.inputForm.append(this.inputPrefix)
-    this.inputForm.append(this.messageInput)
-    this.inputForm.append(this.sendButton)
+    this.input_form.append(this.input_prefix)
+    this.input_form.append(this.message_input)
+    this.input_form.append(this.send_button)
 
-    this.msgContainerWrap.append(this.messageContainer)
-    this.content.append(this.msgContainerWrap)
-    this.content.append(this.inputForm)
+    this.message_container_wrap.append(this.message_container)
+    this.content.append(this.message_container_wrap)
+    this.content.append(this.input_form)
 
     this.root.append(this.titlebar)
     this.root.append(this.content)
     this.parent.append(this.root)
   }
 
-  public setTitle(title: string) {
+  public set_title(title: string) {
     this.titlebar.text(title)
     return this
   }
 
-  public setHostName(hostname: string) {
+  public set_hostname(hostname: string) {
     this.hostname = hostname
     return this
   }
 
-  public setUserName(username: string) {
+  public set_username(username: string) {
     this.username = username
-    this.inputPrefix.text(`${username.substring(0, 12)}>`)
+    this.input_prefix.text(`${username.substring(0, 12)}>`)
     return this
   }
 
-  public get currentInput() {
-    return this.messageInput.val() as string
+  public get current_input() {
+    return this.message_input.val() as string
   }
 
-  public clearInput() {
-    this.messageInput.val('')
+  public clear_input() {
+    this.message_input.val('')
     return this
   }
 
-  public getInputAndClear() {
-    let value = this.messageInput.val() as string
-    this.clearInput()
+  public get_input_and_clear() {
+    let value = this.message_input.val() as string
+    this.clear_input()
     return value
   }
 
-  public enableInputs() {
-    this.sendButton.removeAttr('disabled')
-    this.messageInput.removeAttr('disabled')
+  public enable_inputs() {
+    this.send_button.removeAttr('disabled')
+    this.message_input.removeAttr('disabled')
     return this
   }
 
-  public disableInputs() {
-    this.sendButton.attr('disabled', '')
-    this.messageInput.attr('disabled', '')
+  public disable_inputs() {
+    this.send_button.attr('disabled', '')
+    this.message_input.attr('disabled', '')
     return this
   }
 
-  public onSendMessage(callback: (event: JQuery.ClickEvent) => void) {
-    this.sendButton.on('click', callback)
+  public on_send_message(callback: (event: JQuery.ClickEvent) => void) {
+    this.send_button.on('click', callback)
     return this
   }
 
-  public addMessage(author: string, content: string, timestamp: number) {
-    let localeTime = getLocaleTimeString(timestamp, shortTimeOpts)
+  public add_message(author: string, content: string, timestamp: number) {
+    let localeTime = get_locale_timestring(timestamp, short_time_opts)
 
     let element = create('p').attr('name', 'message-line')
     let timeEl = create('span').text(localeTime).attr('name', 'message-time')
@@ -122,7 +122,7 @@ export class ChatWindow {
 
     element.append(timeEl, whitespaceEl, authorEl, separatorEl, contentEl)
 
-    this.messageContainer.append(element)
+    this.message_container.append(element)
     return this
   }
 }
@@ -131,10 +131,10 @@ export class LoginWindow {
   root: JQuery<HTMLElement>
   background: JQuery<HTMLElement>
   modal: JQuery<HTMLElement>
-  inputForm: JQuery<HTMLElement>
-  usernameInput: JQuery<HTMLElement>
-  goButton: JQuery<HTMLElement>
-  errorMessage: JQuery<HTMLElement>
+  input_form: JQuery<HTMLElement>
+  username_input: JQuery<HTMLElement>
+  go_button: JQuery<HTMLElement>
+  error_message: JQuery<HTMLElement>
 
   constructor(public parent: JQuery<HTMLElement>) {
     this.root = create('div')
@@ -142,77 +142,79 @@ export class LoginWindow {
       .attr('style', 'animation: fadein 400ms ease-in-out forwards')
     this.background = create('div').attr('name', 'app-login-bg')
     this.modal = create('div').attr('name', 'app-login-modal')
-    this.inputForm = create('form').attr('name', 'app-login-form')
-    this.usernameInput = create('input')
+    this.input_form = create('form').attr('name', 'app-login-form')
+    this.username_input = create('input')
       .attr('name', 'app-login-userinput')
       .attr('autocomplete', 'off')
       .attr('placeholder', 'username')
       .attr('maxlength', '12')
-    this.goButton = create('button').attr('name', 'app-login-button').text('GO')
-    this.errorMessage = create('div').attr('name', 'app-login-error')
+    this.go_button = create('button')
+      .attr('name', 'app-login-button')
+      .text('GO')
+    this.error_message = create('div').attr('name', 'app-login-error')
 
-    this.inputForm.append(this.usernameInput)
-    this.inputForm.append(this.goButton)
-    this.modal.append(this.inputForm)
-    this.modal.append(this.errorMessage)
+    this.input_form.append(this.username_input)
+    this.input_form.append(this.go_button)
+    this.modal.append(this.input_form)
+    this.modal.append(this.error_message)
     this.background.append(this.modal)
     this.root.append(this.background)
     this.parent.append(this.root)
 
-    this.usernameInput.on('input', () => {
-      this.hideError()
+    this.username_input.on('input', () => {
+      this.hide_error()
     })
   }
 
-  public get currentInput() {
-    return this.usernameInput.val() as string
+  public get current_input() {
+    return this.username_input.val() as string
   }
 
-  public shakeModal() {
+  public shake_modal() {
     this.modal.toggleClass('shakeit')
     setTimeout(() => this.modal.toggleClass('shakeit'), 300)
     return this
   }
 
-  public displayError(error: string) {
-    this.errorMessage.text(error)
-    this.errorMessage.attr('style', 'display: block')
-    setTimeout(() => this.errorMessage.attr('style', 'display: none'), 5000)
-    this.shakeModal()
+  public display_error(error: string) {
+    this.error_message.text(error)
+    this.error_message.attr('style', 'display: block')
+    setTimeout(() => this.error_message.attr('style', 'display: none'), 5000)
+    this.shake_modal()
     return this
   }
 
-  public hideError() {
-    this.errorMessage.attr('style', 'display: none')
+  public hide_error() {
+    this.error_message.attr('style', 'display: none')
     return this
   }
 
-  public enableInputs() {
-    this.goButton.removeAttr('disabled')
-    this.usernameInput.removeAttr('disabled')
+  public enable_inputs() {
+    this.go_button.removeAttr('disabled')
+    this.username_input.removeAttr('disabled')
     return this
   }
 
-  public disableInputs() {
-    this.goButton.attr('disabled', '')
-    this.usernameInput.attr('disabled', '')
+  public disable_inputs() {
+    this.go_button.attr('disabled', '')
+    this.username_input.attr('disabled', '')
     return this
   }
 
-  public hideWindow() {
+  public hide_window() {
     this.root.attr('style', 'animation: fadeout 200ms ease-in forwards')
     return this
   }
 
-  public onSubmit(callback: (event: JQuery.ClickEvent) => void) {
-    this.goButton.on('click', callback)
+  public on_submit(callback: (event: JQuery.ClickEvent) => void) {
+    this.go_button.on('click', callback)
     return this
   }
 
-  public onInput(
+  public on_input(
     callback: (event: JQuery.TriggeredEvent<any, any, any, any>) => void
   ) {
-    this.usernameInput.on('keydown', callback)
+    this.username_input.on('keydown', callback)
     return this
   }
 }

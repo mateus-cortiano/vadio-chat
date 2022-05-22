@@ -5,70 +5,70 @@ import * as View from './view'
 import { Client } from './client'
 import { SocketData } from '../interfaces/socket'
 import {
-  isValid,
-  matchRegex,
-  notEmptyString,
-  notNull,
-  notWhiteSpace
+  is_valid,
+  match_regex,
+  not_empty_str,
+  not_null,
+  not_whitespace
 } from '../lib/validators'
 
 // ---
 
 const client = new Client()
 const parent = $('div[name=application]')
-const chatWindow = new View.ChatWindow(parent)
-const loginWindow = new View.LoginWindow(parent)
+const chat_window = new View.ChatWindow(parent)
+const login_window = new View.LoginWindow(parent)
 
-const inputValidators = [notEmptyString, notWhiteSpace, matchRegex(/[\w\d]/g)]
-const loginInputValidators = [notNull, matchRegex(/[a-zA-Z0-9_]/)]
+const msg_validators = [not_empty_str, not_whitespace]
+const login_validators = [not_null, match_regex(/[a-zA-Z0-9_]/)]
 
 let username: string
 
 // ---
 
-chatWindow.disableInputs()
+chat_window.disable_inputs()
 
-client.onConnected((data: SocketData) => {
-  chatWindow.setTitle(data.hostname).setHostName(data.hostname)
+client.on_connected((data: SocketData) => {
+  chat_window.set_title(data.hostname).set_hostname(data.hostname)
 })
 
-loginWindow.onInput(event => {
-  let inputChar = (event.originalEvent as KeyboardEvent).key
-  if (!isValid(inputChar, ...loginInputValidators)) event.preventDefault()
+login_window.on_input(event => {
+  let input_char = (event.originalEvent as KeyboardEvent).key
+  if (!is_valid(input_char, ...login_validators)) event.preventDefault()
 })
 
-loginWindow.onSubmit((event: JQuery.ClickEvent) => {
+login_window.on_submit((event: JQuery.ClickEvent) => {
   event.preventDefault()
 
-  if (!isValid(loginWindow.currentInput, ...inputValidators)) return
+  if (!is_valid(login_window.current_input, ...msg_validators)) return
 
-  username = loginWindow.currentInput
+  username = login_window.current_input
 
-  loginWindow.disableInputs()
-  client.sendUserName(username)
+  login_window.disable_inputs()
+  client.send_username(username)
 })
 
-client.onAuth((authentication: SocketData) => {
+client.on_auth((authentication: SocketData) => {
   if (authentication.err) {
-    loginWindow.displayError(authentication.err)
-    loginWindow.enableInputs()
+    login_window.display_error(authentication.err)
+    login_window.enable_inputs()
     return
   }
 
-  chatWindow.setUserName(username)
-  chatWindow.enableInputs()
-  loginWindow.hideWindow()
+  chat_window.set_username(username)
+  chat_window.enable_inputs()
+  login_window.hide_window()
 })
 
-chatWindow.onSendMessage(event => {
+chat_window.on_send_message(event => {
   event.preventDefault()
 
-  if (!isValid(chatWindow.currentInput, ...inputValidators)) return
+  if (!is_valid(chat_window.current_input, ...msg_validators)) return
 
-  client.emitMessage(chatWindow.currentInput)
-  chatWindow.clearInput()
+  client.emit_message(chat_window.current_input)
+  chat_window.clear_input()
 })
 
-client.onServerMessage((message: SocketData) => {
-  chatWindow.addMessage(message.author, message.content, message.timestamp)
+client.on_server_message((message: SocketData) => {
+  chat_window.add_message(message.author, message.content, message.timestamp)
 })

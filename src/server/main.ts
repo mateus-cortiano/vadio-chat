@@ -3,13 +3,9 @@
 import { Server } from './server'
 import { Environment } from './config'
 import { Message, ErrorMessage, EmptyMessage } from '../lib/message'
-import {
-  maxLength,
-  sanitizeString as sanitize,
-  trimString
-} from '../lib/sanitizers'
-import { isValid, notEmptyString, notEquals } from '../lib/validators'
-import { Model } from './model'
+import { max_len, sanitize_str as sanitize, trim_str } from '../lib/sanitizers'
+import { is_valid, not_empty_str, not_equals } from '../lib/validators'
+import { model } from './model'
 
 // ---
 
@@ -18,8 +14,8 @@ const MAX_USERNAME_LENGTH = 12
 const env = new Environment()
 const server = new Server(env.port, env.public_path)
 
-const usernameValidators = [notEmptyString, notEquals(env.name)]
-const usernameSanitizers = [trimString, maxLength(MAX_USERNAME_LENGTH)]
+const usernameValidators = [not_empty_str, not_equals(env.name)]
+const usernameSanitizers = [trim_str, max_len(MAX_USERNAME_LENGTH)]
 
 const HostnameMessage = new Message('', '', '', env.name)
 const InvalidUsernameMessage = new ErrorMessage('Invalid Username')
@@ -30,46 +26,42 @@ const UserConnectedMessage = (username: string) =>
 
 // ---
 
-server.onConnection(socket => {
+server.on_connection(socket => {
   let sock_username: string | null = null
 
   socket.emit('connected', HostnameMessage)
 
-  socket.on('sendUsername', username => {
-    if (Model.userCount >= env.max_users) {
-      socket.emit('isAuthenticated', FullRoomMessage)
+  socket.on('send_username', username => {
+    if (model.user_count >= env.max_users) {
+      socket.emit('is_authenticated', FullRoomMessage)
       return
     }
 
     username = sanitize(username, ...usernameSanitizers)
 
-    if (!isValid(username, ...usernameValidators)) {
-      socket.emit('isAuthenticated', InvalidUsernameMessage)
+    if (!is_valid(username, ...usernameValidators)) {
+      socket.emit('is_authenticated', InvalidUsernameMessage)
       return
     }
 
-    if (Model.userExists(username)) {
-      socket.emit('isAuthenticated', UsernameInUseMessage)
+    if (model.user_exists(username)) {
+      socket.emit('is_authenticated', UsernameInUseMessage)
       return
     }
 
-    server.events.emit('userAuthenticated', username)
-  })
-
-  server.events.on('userAuthenticated', username => {
     sock_username = username
-    Model.addUser(sock_username)
-    socket.emit('isAuthenticated', EmptyMessage)
-    server.emitMessage(UserConnectedMessage(sock_username))
+    model.add_user(sock_username)
+    socket.emit('is_authenticated', EmptyMessage)
+    server.emit_message(UserConnectedMessage(sock_username))
   })
 
-  socket.on('clientMessage', data => {
+  socket.on('client_message', data => {
     if (sock_username === null) return
-    server.emitMessage(new Message(data.content, sock_username))
+    server.emit_message(new Message(data.content, sock_username))
   })
 
   socket.on('disconnect', () => {
-    Model.removeUser(sock_username)
+    model.remove_user(sock_username)
   })
 })
 

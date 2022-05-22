@@ -18,24 +18,24 @@ export class Client {
     return this._id
   }
 
-  public emitMessage(content: string) {
+  public emit_message(content: string) {
     let message = new Message(content)
-    this.socket.emit('clientMessage', message)
+    this.socket.emit('client_message', message)
   }
 
-  public sendUserName(username: string) {
-    this.socket.emit('sendUsername', username)
+  public send_username(username: string) {
+    this.socket.emit('send_username', username)
   }
 
-  public onConnected(callback: (data: SocketData) => void) {
+  public on_connected(callback: (data: SocketData) => void) {
     this.socket.on('connected', callback)
   }
 
-  public onServerMessage(callback: (data: SocketData) => void) {
-    this.socket.on('serverMessage', callback)
+  public on_server_message(callback: (data: SocketData) => void) {
+    this.socket.on('server_message', callback)
   }
 
-  public onAuth(callback: (data: SocketData) => void) {
-    this.socket.on('isAuthenticated', callback)
+  public on_auth(callback: (data: SocketData) => void) {
+    this.socket.on('is_authenticated', callback)
   }
 }

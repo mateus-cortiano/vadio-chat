@@ -23,7 +23,7 @@ export function validate(
   return { passed: true }
 }
 
-export function isValid(value: any, ...validators: Validator[]) {
+export function is_valid(value: any, ...validators: Validator[]) {
   for (let validator of validators) if (!validator(value)) return false
   return true
 }
@@ -37,7 +37,7 @@ export const notEmptyString2 = {
   }
 }
 
-export function notEmptyString(subject: any): boolean {
+export function not_empty_str(subject: any): boolean {
   return subject !== ''
 }
 
@@ -50,7 +50,7 @@ export function notEquals2(thisname: string) {
   }
 }
 
-export function notEquals(thisname: string): Validator {
+export function not_equals(thisname: string): Validator {
   return function (subject: any) {
     return subject !== thisname
   }
@@ -63,7 +63,7 @@ export const notWhiteSpace2 = {
   }
 }
 
-export function notWhiteSpace(subject: string): boolean {
+export function not_whitespace(subject: string): boolean {
   return !(subject === null) && !(subject.trim() === '')
 }
 
@@ -74,7 +74,7 @@ export const notNull2 = {
   }
 }
 
-export function notNull(subject: string): boolean {
+export function not_null(subject: string): boolean {
   return subject !== null
 }
 
@@ -88,7 +88,7 @@ export function matchRegex2(pattern: string | RegExp): Validator2 {
   }
 }
 
-export function matchRegex(pattern: string | RegExp): Validator {
+export function match_regex(pattern: string | RegExp): Validator {
   let regex = new RegExp(pattern)
   return function (subject: any) {
     return regex.test(subject)

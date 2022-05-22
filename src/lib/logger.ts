@@ -1,6 +1,6 @@
 /* logger.ts */
 
-import { getNowTimeString } from './timestamp'
+import { get_now_timestring } from './timestamp'
 
 /* Level */
 
@@ -13,11 +13,11 @@ export enum Level {
 
 const Levels = Object.values(Level)
 
-function getLevel(level: string): Level {
+function get_level(level: string): Level {
   return Level[level as keyof typeof Level]
 }
 
-function getLevelName(level: Level): string {
+function get_level_name(level: Level): string {
   return Levels[level] as string
 }
 
@@ -32,8 +32,8 @@ export class DefaultFormatter implements Formatter {
 
   format(name: string, level: Level, message: string): string {
     return this.stringfmt
-      .replace('${timestamp}', getNowTimeString())
-      .replace('${level}', getLevelName(level))
+      .replace('${timestamp}', get_now_timestring())
+      .replace('${level}', get_level_name(level))
       .replace('${name}', name)
       .replace('${message}', message)
   }
@@ -45,7 +45,7 @@ export interface LogHandler {
   level: Level
   formatter: Formatter
 
-  setFormatter(formatter: Formatter): void
+  set_formatter(formatter: Formatter): void
   handle(name: string, level: Level, message: string): void
 }
 
@@ -55,7 +55,7 @@ export class ConsoleLogHandler implements LogHandler {
     public formatter: Formatter = new DefaultFormatter()
   ) {}
 
-  setFormatter(formatter: Formatter) {
+  set_formatter(formatter: Formatter) {
     this.formatter = formatter
   }
 
@@ -92,23 +92,23 @@ export class FileLogHandler implements LogHandler {
     public level: Level = Level.INFO,
     public formatter: Formatter = new DefaultFormatter()
   ) {
-    this.writeFile('')
+    this.write_file('')
   }
 
-  writeFile(data: string) {
+  write_file(data: string) {
     this.fs.appendFile(this.path, data + '\n', (err?: Error) => {
       if (err) return console.error(err)
     })
   }
 
-  setFormatter(formatter: Formatter) {
+  set_formatter(formatter: Formatter) {
     this.formatter = formatter
   }
 
   handle(name: string, level: Level, message: string) {
     if (this.level > level) return
     let formatted = this.formatter.format(name, level, message)
-    this.writeFile(formatted)
+    this.write_file(formatted)
   }
 }
 
@@ -127,25 +127,25 @@ export class Logger {
     this.handlers.push(handler)
   }
 
-  static getLogger(name: string): Logger {
+  static get_logger(name: string): Logger {
     if (!(name in Logger.instances.keys())) {
       Logger.instances.set(name, new Logger(name))
     }
     return Logger.instances.get(name)
   }
 
-  public setAllLevels(level: Level): Logger {
+  public set_all_levels(level: Level): Logger {
     this.level = level
     for (let handler of this.handlers) handler.level = level
     return this
   }
 
-  public addHandler(handler: LogHandler): Logger {
+  public add_handler(handler: LogHandler): Logger {
     this.handlers.push(handler)
     return this
   }
 
-  public removeHandler(handler: LogHandler): Logger {
+  public remove_handler(handler: LogHandler): Logger {
     this.handlers = this.handlers.filter(v => v != handler)
     return this
   }
@@ -167,7 +167,7 @@ export class Logger {
     levelName: 'debug' | 'info' | 'warn' | 'error',
     descriptor: PropertyDescriptor
   ) {
-    let level = getLevel(levelName.toUpperCase())
+    let level = get_level(levelName.toUpperCase())
 
     descriptor.value = function (this: Logger, message: string) {
       if (this.level > level) return
