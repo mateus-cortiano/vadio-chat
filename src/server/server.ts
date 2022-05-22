@@ -45,6 +45,10 @@ export class Server {
 
     this.onConnection(socket => {
       this.logger.info(` * ${socket.id} connected`)
+
+      socket.on('disconnect', reason => {
+        this.logger.info(` * ${socket.id} disconnected [${reason}]`)
+      })
     })
   }
 
