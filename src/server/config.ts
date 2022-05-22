@@ -10,6 +10,8 @@ const DEFAULT_PORT = 5500
 const DEFAULT_MODE: Mode = 'development'
 const DEFAULT_MAX_USERS = 12
 
+// ---
+
 export enum Modes {
   'development',
   'production'

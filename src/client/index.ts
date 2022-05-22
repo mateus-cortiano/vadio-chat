@@ -4,7 +4,13 @@ import * as $ from 'jquery'
 import * as View from './view'
 import { Client } from './client'
 import { SocketData } from '../interfaces/socket'
-import { isValid, notEmpty, notWhiteSpace } from '../lib/validators'
+import {
+  isValid,
+  matchRegex,
+  notEmptyString,
+  notNull,
+  notWhiteSpace
+} from '../lib/validators'
 
 // ---
 
@@ -13,13 +19,22 @@ const parent = $('div[name=application]')
 const chatWindow = new View.ChatWindow(parent)
 const loginWindow = new View.LoginWindow(parent)
 
+const inputValidators = [notEmptyString, notWhiteSpace, matchRegex(/[\w\d]/g)]
+const loginInputValidators = [notNull, matchRegex(/[a-zA-Z0-9_]/)]
+
 let username: string
-let inputValidators = [notEmpty, notWhiteSpace]
+
+// ---
 
 chatWindow.disableInputs()
 
 client.onConnected((data: SocketData) => {
   chatWindow.setTitle(data.hostname).setHostName(data.hostname)
+})
+
+loginWindow.onInput(event => {
+  let inputChar = (event.originalEvent as KeyboardEvent).key
+  if (!isValid(inputChar, ...loginInputValidators)) event.preventDefault()
 })
 
 loginWindow.onSubmit((event: JQuery.ClickEvent) => {

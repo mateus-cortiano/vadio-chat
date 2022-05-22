@@ -75,7 +75,7 @@ export function isTCPPort(subject: any): boolean {
 
 /* Input Validators */
 
-export function notEmpty(subject: any): boolean {
+export function notEmptyString(subject: any): boolean {
   return subject !== ''
 }
 
@@ -86,5 +86,16 @@ export function notEquals(thisname: string): Validator {
 }
 
 export function notWhiteSpace(subject: string): boolean {
-  return !(subject.trim() === '')
+  return !(subject === null) && !(subject.trim() === '')
+}
+
+export function notNull(subject: string): boolean {
+  return subject !== null
+}
+
+export function matchRegex(pattern: string | RegExp): Validator {
+  let regex = new RegExp(pattern)
+  return function (subject: any) {
+    return regex.test(subject)
+  }
 }

@@ -10,17 +10,17 @@ function create(tagName: string): JQuery<HTMLElement> {
 }
 
 export class ChatWindow {
-  private username: string
-  private hostname: string
-  private root: JQuery<HTMLElement>
-  private titlebar: JQuery<HTMLElement>
-  private content: JQuery<HTMLElement>
-  private msgContainerWrap: JQuery<HTMLElement>
-  private messageContainer: JQuery<HTMLElement>
-  private inputPrefix: JQuery<HTMLElement>
-  private inputForm: JQuery<HTMLElement>
-  private messageInput: JQuery<HTMLElement>
-  private sendButton: JQuery<HTMLElement>
+  username: string
+  hostname: string
+  root: JQuery<HTMLElement>
+  titlebar: JQuery<HTMLElement>
+  content: JQuery<HTMLElement>
+  msgContainerWrap: JQuery<HTMLElement>
+  messageContainer: JQuery<HTMLElement>
+  inputPrefix: JQuery<HTMLElement>
+  inputForm: JQuery<HTMLElement>
+  messageInput: JQuery<HTMLElement>
+  sendButton: JQuery<HTMLElement>
 
   constructor(public parent: JQuery<HTMLElement>) {
     this.hostname = ''
@@ -59,17 +59,17 @@ export class ChatWindow {
     this.parent.append(this.root)
   }
 
-  setTitle(title: string) {
+  public setTitle(title: string) {
     this.titlebar.text(title)
     return this
   }
 
-  setHostName(hostname: string) {
+  public setHostName(hostname: string) {
     this.hostname = hostname
     return this
   }
 
-  setUserName(username: string) {
+  public setUserName(username: string) {
     this.username = username
     this.inputPrefix.text(`${username.substring(0, 12)}>`)
     return this
@@ -164,7 +164,7 @@ export class LoginWindow {
     })
   }
 
-  get currentInput() {
+  public get currentInput() {
     return this.usernameInput.val() as string
   }
 
@@ -206,6 +206,13 @@ export class LoginWindow {
 
   public onSubmit(callback: (event: JQuery.ClickEvent) => void) {
     this.goButton.on('click', callback)
+    return this
+  }
+
+  public onInput(
+    callback: (event: JQuery.TriggeredEvent<any, any, any, any>) => void
+  ) {
+    this.usernameInput.on('keydown', callback)
     return this
   }
 }
