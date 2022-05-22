@@ -8,18 +8,19 @@ export interface Validator2 {
 }
 
 export class ValidationResult {
-  result: boolean
-  passed: Validator2[] = []
-  failed: Validator2[] = []
+  passed: boolean
+  err?: string
 }
 
-export function validate(subject: any, ...validators: Validator2[]) {
-  let result = new ValidationResult()
+export function validate(
+  subject: any,
+  ...validators: Validator2[]
+): ValidationResult {
   for (let validator of validators) {
-    if (!validator.validate(subject)) result.failed.push(validator)
-    else result.passed.push(validator)
+    if (!validator.validate(subject))
+      return { passed: false, err: validator.errorMessage }
   }
-  return result
+  return { passed: true }
 }
 
 export function isValid(value: any, ...validators: Validator[]) {
@@ -55,12 +56,36 @@ export function notEquals(thisname: string): Validator {
   }
 }
 
+export const notWhiteSpace2 = {
+  errorMessage: `String is whitespace`,
+  validate: function (subject: any) {
+    return subject.trim() !== ''
+  }
+}
+
 export function notWhiteSpace(subject: string): boolean {
   return !(subject === null) && !(subject.trim() === '')
 }
 
+export const notNull2 = {
+  errorMessage: `String is null`,
+  validate: function (subject: any) {
+    return subject !== null
+  }
+}
+
 export function notNull(subject: string): boolean {
   return subject !== null
+}
+
+export function matchRegex2(pattern: string | RegExp): Validator2 {
+  let regex = new RegExp(pattern)
+  return {
+    errorMessage: `String didn't match regex pattern ${pattern}`,
+    validate: function (subject: any) {
+      return regex.test(subject)
+    }
+  }
 }
 
 export function matchRegex(pattern: string | RegExp): Validator {

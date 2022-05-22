@@ -1,52 +1,42 @@
 /* eventsystem.ts */
 
-import { EventEmitter } from 'stream'
-
-type Callback<Data> = (...args: Data[] | any[]) => void
-export type EventMap = { [key: symbol]: (...args: any[]) => void }
-export type GenericEventMap<T, Data> = {
-  [Prop in keyof T]: T[Prop] extends Callback<Data> ? Callback<Data> : never
+export type EventMap<Events> = {
+  [Prop in keyof Events]: Events[Prop]
 }
 
-export class EventsSystem<
-  Events extends GenericEventMap<Events, Data>,
-  Data = (...args: any[]) => void
-> {
+export interface BaseEvents {
+  connect: (username: string) => void
+  disconnect: (reason: string) => void
+}
+
+export class EventSystem<Events extends EventMap<Events> = BaseEvents> {
   private subscribers: Map<keyof Events, Events[keyof Events][]>
 
   constructor() {
     this.subscribers = new Map()
   }
 
-  public on(event: keyof Events, callback: Events[keyof Events]) {
-    this.setdefault(event).push(callback)
-    return () => this.remove(event, callback)
-  }
-
-  public emit(event: keyof Events, ...data: Data[] | any[]) {
-    let subs = this.get(event, [])
-    for (let sub of subs) sub(...data)
-  }
-
-  private get<T>(
-    event: keyof Events,
-    ordefault: T = undefined
-  ): Events[keyof Events][] | T {
-    let subs = this.subscribers.get(event)
-    if (subs === undefined) return ordefault
-    return subs
-  }
-
-  private setdefault(event: keyof Events): Events[keyof Events][] {
+  private setdefault(event: keyof Events) {
     let subs = this.subscribers.get(event)
     if (subs === undefined) {
       this.subscribers.set(event, [])
       subs = this.subscribers.get(event)
     }
-    return subs
+    return subs as Events[keyof Events][]
   }
 
-  public remove(event: keyof Events, callback: Events[keyof Events]) {
+  on<Ev extends keyof Events>(event: Ev, callback: Events[Ev]) {
+    this.setdefault(event).push(callback)
+    return () => this.remove(event, callback)
+  }
+
+  emit<Ev extends keyof Events>(event: Ev, ...data: Parameters<Events[Ev]>) {
+    let subs = this.subscribers.get(event)
+    if (subs === undefined) return
+    for (let sub of subs) sub(...(data as Events[Ev][]))
+  }
+
+  remove<Ev extends keyof Events>(event: Ev, callback: Events[Ev]) {
     let subs = this.subscribers.get(event)
     if (subs === undefined) return
     subs.splice(subs.indexOf(callback))

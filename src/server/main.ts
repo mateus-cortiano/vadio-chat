@@ -56,7 +56,7 @@ server.onConnection(socket => {
     server.events.emit('userAuthenticated', username)
   })
 
-  server.events.on('userAuthenticated', (username: string) => {
+  server.events.on('userAuthenticated', username => {
     sock_username = username
     Model.addUser(sock_username)
     socket.emit('isAuthenticated', EmptyMessage)
