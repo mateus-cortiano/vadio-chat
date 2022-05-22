@@ -1,7 +1,6 @@
 /* config.ts */
 
 import { env } from 'process'
-import { isTCPPort } from '../lib/validators'
 
 // ---
 
@@ -33,7 +32,7 @@ export class Environment {
   readonly max_users: number
 
   constructor() {
-    this.port = Number(isTCPPort(env.PORT) ? env.PORT : DEFAULT_PORT)
+    this.port = Number(env.PORT ? env.PORT : DEFAULT_PORT)
     this.mode = isValidMode(env.NODE_ENV) ? env.NODE_ENV : DEFAULT_MODE
     this.name = env.APPLICATION_NAME || DEFAULT_NAME
     this.db_host = env.APPLICATION_DB_HOST
