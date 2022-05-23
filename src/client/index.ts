@@ -28,7 +28,14 @@ let username: string
 chat_window.disable_inputs()
 
 client.on_connected(data => {
+  login_window.show_window()
+  login_window.enable_inputs()
   chat_window.set_title(data.hostname).set_hostname(data.hostname)
+})
+
+client.on_disconnected(() => {
+  chat_window.disable_inputs()
+  login_window.show_window()
 })
 
 login_window.on_input(event => {

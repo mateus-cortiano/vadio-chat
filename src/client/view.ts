@@ -202,6 +202,11 @@ export class LoginWindow {
     return this
   }
 
+  public show_window() {
+    this.root.attr('style', 'animation: fadein 200ms ease-in forwards')
+    return this
+  }
+
   public hide_window() {
     this.root.attr('style', 'animation: fadeout 200ms ease-in forwards')
     return this

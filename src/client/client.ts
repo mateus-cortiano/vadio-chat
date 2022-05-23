@@ -28,6 +28,10 @@ export class Client {
     this.socket.on('connected', callback)
   }
 
+  public on_disconnected(callback: (reason: Socket.DisconnectReason) => void) {
+    this.socket.on('disconnect', callback)
+  }
+
   public on_server_message(callback: (data: SocketData) => void) {
     this.socket.on('server_message', callback)
   }
