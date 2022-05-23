@@ -3,9 +3,24 @@
   "tasks": [
     {
       "type": "shell",
-      "command": ["npm install;", "npm run build;", "npm run serve;"],
-      "label": "npm: build and serve",
-      "problemMatcher": [],
+      "label": "dev: watch server",
+      "command": "npm run dev-watch-server",
+      "presentation": {
+        "group": "dev: watch and serve"
+      }
+    },
+    {
+      "type": "shell",
+      "label": "dev: watch client",
+      "command": "npm run dev-watch-client",
+      "presentation": {
+        "group": "dev: watch and serve"
+      }
+    },
+    {
+      "type": "shell",
+      "label": "dev: serve with nodemon",
+      "command": "npm run dev-run-server",
       "options": {
         "env": {
           "PORT": "5500",
@@ -16,18 +31,38 @@
           "APPLICATION_DB_HOST": "localhost",
           "APPLICATION_DB_PASS": "SECRET_PASS"
         }
+      },
+      "presentation": {
+        "group": "dev: watch and serve"
       }
     },
     {
-      "type": "shell",
-      "command": ["npm run deploy;", "npm run heroku-logs"],
-      "label": "npm/heroku: deploy and watch logs",
+      "label": "dev: watch and nodemon serve",
+      "dependsOn": [
+        "dev: watch client",
+        "dev: watch server",
+        "dev: serve with nodemon"
+      ],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "dev: watch and serve"
+      },
       "problemMatcher": []
     },
     {
       "type": "shell",
+      "command": ["npm run deploy;", "npm run heroku-logs"],
+      "label": "npm/heroku: deploy and watch logs"
+    },
+    {
+      "type": "shell",
       "command": ["npm run dev-watch-client"],
-      "label": "npm: watch client",
+      "label": "npm: watch client & server",
       "problemMatcher": []
     }
   ]
