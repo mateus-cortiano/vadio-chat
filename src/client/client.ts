@@ -1,11 +1,11 @@
 /* client.ts */
 
 import { io, Socket } from 'socket.io-client'
+import { Message, UserMessage } from '../server/message'
 import {
   ServerToClientEvents,
   ClientToServerEvents,
-  SocketData,
-  Message
+  SocketData
 } from '../server/events'
 
 export class Client {
@@ -16,7 +16,7 @@ export class Client {
   }
 
   public emit_message(content: string) {
-    let message = new Message(content)
+    let message = UserMessage(content)
     this.socket.emit('client_message', message)
   }
 

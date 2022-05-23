@@ -1,6 +1,6 @@
 /* model.ts */
 
-import { Message } from './events'
+import { Message } from './message'
 
 // ---
 
