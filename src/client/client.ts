@@ -38,4 +38,8 @@ export class Client {
   public on_auth(callback: (data: SocketData) => void) {
     this.socket.on('is_authenticated', callback)
   }
+
+  public on_last_messages(callback: (...data: Message[]) => void) {
+    this.socket.on('last_messages', callback)
+  }
 }

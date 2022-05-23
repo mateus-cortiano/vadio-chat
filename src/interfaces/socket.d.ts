@@ -4,6 +4,7 @@ export interface ServerToClientEvents {
   connected: (d: SocketData) => void
   server_message: (d: SocketData) => void
   is_authenticated: (d: SocketData) => void
+  last_messages: (...d: SocketData[]) => void
 }
 
 export interface ClientToServerEvents {

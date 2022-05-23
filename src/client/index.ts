@@ -60,6 +60,11 @@ client.on_auth((authentication: SocketData) => {
   login_window.hide_window()
 })
 
+client.on_last_messages((...messages) => {
+  for (let message of messages)
+    chat_window.add_message(message.author, message.content, message.timestamp)
+})
+
 chat_window.on_send_message(event => {
   event.preventDefault()
 

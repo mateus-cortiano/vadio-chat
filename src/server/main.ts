@@ -52,12 +52,15 @@ server.on_connection(socket => {
     sock_username = username
     model.add_user(sock_username)
     socket.emit('is_authenticated', EmptyMessage)
+    socket.emit('last_messages', ...model.messages)
     server.emit_message(UserConnectedMessage(sock_username))
   })
 
   socket.on('client_message', data => {
     if (sock_username === null) return
-    server.emit_message(new Message(data.content, sock_username))
+    let message = new Message(data.content, sock_username)
+    model.add_message(message)
+    server.emit_message(message)
   })
 
   socket.on('disconnect', () => {
