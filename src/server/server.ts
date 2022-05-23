@@ -7,8 +7,6 @@ import * as socketio from 'socket.io'
 import * as ejs from 'ejs'
 
 import { Logger } from '../lib/logger'
-import { EventSystem } from '../lib/eventsystem'
-import { ServerEvents } from './events'
 
 import {
   ServerToClientEvents,
@@ -29,14 +27,12 @@ export class Server {
     SocketData
   >
   private logger: Logger
-  public events: EventSystem<ServerEvents>
 
   constructor(public port: number, public public_path: string = '../client') {
     this.app = express()
     this.server = http.createServer(this.app)
     this.io = new socketio.Server(this.server)
     this.logger = Logger.get_logger(this.constructor.name)
-    this.events = new EventSystem<ServerEvents>()
 
     this.app
       .engine('html', ejs.renderFile)
