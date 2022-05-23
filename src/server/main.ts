@@ -2,20 +2,24 @@
 
 import { Server } from './server'
 import { Environment } from './config'
-import { Message, ErrorMessage, EmptyMessage } from '../lib/message'
+import { Message, ErrorMessage, EmptyMessage } from './events'
 import { max_len, sanitize_str as sanitize, trim_str } from '../lib/sanitizers'
 import { is_valid, not_empty_str, not_equals } from '../lib/validators'
-import { model } from './model'
+import { Model } from './model'
 
 // ---
 
+const MAX_MESSAGE_LENGTH = 240
 const MAX_USERNAME_LENGTH = 12
+const MESSAGE_HISTORY_LENGTH = 10
 
 const env = new Environment()
 const server = new Server(env.port, env.public_path)
+const model = new Model(MESSAGE_HISTORY_LENGTH)
 
-const usernameValidators = [not_empty_str, not_equals(env.name)]
-const usernameSanitizers = [trim_str, max_len(MAX_USERNAME_LENGTH)]
+const username_validators = [not_empty_str, not_equals(env.name)]
+const username_sanitizers = [trim_str, max_len(MAX_USERNAME_LENGTH)]
+const message_sanitizers = [trim_str, max_len(MAX_MESSAGE_LENGTH)]
 
 const HostnameMessage = new Message('', '', '', env.name)
 const InvalidUsernameMessage = new ErrorMessage('Invalid Username')
@@ -37,9 +41,9 @@ server.on_connection(socket => {
       return
     }
 
-    username = sanitize(username, ...usernameSanitizers)
+    username = sanitize(username, ...username_sanitizers)
 
-    if (!is_valid(username, ...usernameValidators)) {
+    if (!is_valid(username, ...username_validators)) {
       socket.emit('is_authenticated', InvalidUsernameMessage)
       return
     }
@@ -50,15 +54,19 @@ server.on_connection(socket => {
     }
 
     sock_username = username
+
     model.add_user(sock_username)
     socket.emit('is_authenticated', EmptyMessage)
-    socket.emit('last_messages', ...model.messages)
     server.emit_message(UserConnectedMessage(sock_username))
+    socket.emit('last_messages', ...model.messages)
   })
 
   socket.on('client_message', data => {
     if (sock_username === null) return
-    let message = new Message(data.content, sock_username)
+
+    let content = sanitize(data.content, ...message_sanitizers)
+    let message = new Message(content, sock_username)
+
     model.add_message(message)
     server.emit_message(message)
   })

@@ -1,21 +1,18 @@
 /* client.ts */
 
 import { io, Socket } from 'socket.io-client'
-import { SocketData } from '../interfaces/socket'
-import { Message } from '../lib/message'
+import {
+  ServerToClientEvents,
+  ClientToServerEvents,
+  SocketData,
+  Message
+} from '../server/events'
 
 export class Client {
-  private _id: string
-  public socket: Socket
+  public socket: Socket<ServerToClientEvents, ClientToServerEvents>
 
   constructor(readonly host: string = '', readonly port: number | null = null) {
     this.socket = io({ withCredentials: true })
-
-    this.socket.on('connected', id => (this._id = id))
-  }
-
-  get id() {
-    return this._id
   }
 
   public emit_message(content: string) {

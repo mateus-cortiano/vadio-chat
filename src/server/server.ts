@@ -13,7 +13,7 @@ import {
   ClientToServerEvents,
   InterServerEvents,
   SocketData
-} from '../interfaces/socket'
+} from './events'
 
 // ---
 

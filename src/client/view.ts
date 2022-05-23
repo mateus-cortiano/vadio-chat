@@ -41,6 +41,7 @@ export class ChatWindow {
     this.input_prefix = create('div').attr('name', 'app-input-prefix').text('>')
     this.message_input = create('input')
       .attr('name', 'app-message-input')
+      .attr('maxlength', '240')
       .attr('autocomplete', 'off')
     this.send_button = create('button')
       .attr('name', 'app-send-button')

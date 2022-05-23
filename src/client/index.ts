@@ -3,7 +3,6 @@
 import * as $ from 'jquery'
 import * as View from './view'
 import { Client } from './client'
-import { SocketData } from '../interfaces/socket'
 import {
   is_valid,
   match_regex,
@@ -28,7 +27,7 @@ let username: string
 
 chat_window.disable_inputs()
 
-client.on_connected((data: SocketData) => {
+client.on_connected(data => {
   chat_window.set_title(data.hostname).set_hostname(data.hostname)
 })
 
@@ -48,7 +47,7 @@ login_window.on_submit((event: JQuery.ClickEvent) => {
   client.send_username(username)
 })
 
-client.on_auth((authentication: SocketData) => {
+client.on_auth(authentication => {
   if (authentication.err) {
     login_window.display_error(authentication.err)
     login_window.enable_inputs()
@@ -74,6 +73,6 @@ chat_window.on_send_message(event => {
   chat_window.clear_input()
 })
 
-client.on_server_message((message: SocketData) => {
+client.on_server_message(message => {
   chat_window.add_message(message.author, message.content, message.timestamp)
 })
