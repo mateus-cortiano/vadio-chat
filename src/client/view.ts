@@ -122,8 +122,8 @@ export class ChatWindow {
     if (author === this.hostname) authorEl.attr('data-msg-author-is-host', '')
 
     element.append(timeEl, whitespaceEl, authorEl, separatorEl, contentEl)
-
     this.message_container.append(element)
+
     return this
   }
 }
@@ -162,9 +162,7 @@ export class LoginWindow {
     this.root.append(this.background)
     this.parent.append(this.root)
 
-    this.username_input.on('input', () => {
-      this.hide_error()
-    })
+    this.username_input.on('input', () => this.hide_error())
   }
 
   public get current_input() {
@@ -178,10 +176,10 @@ export class LoginWindow {
   }
 
   public display_error(error: string) {
+    this.shake_modal()
     this.error_message.text(error)
     this.error_message.attr('style', 'display: block')
     setTimeout(() => this.error_message.attr('style', 'display: none'), 5000)
-    this.shake_modal()
     return this
   }
 
